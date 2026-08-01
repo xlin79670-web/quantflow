@@ -163,7 +163,7 @@ class _TradesHistoryTab extends ConsumerWidget {
     return trades.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(child: Text('加载失败: $e')),
-      (trades) {
+      data: (trades) {
         if (trades.isEmpty) {
           return const Center(child: Text('暂无交易记录', style: TextStyle(color: Colors.grey)));
         }
