@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 final strategiesProvider = FutureProvider<List<dynamic>>((ref) async {
   final api = ref.read(apiServiceProvider);

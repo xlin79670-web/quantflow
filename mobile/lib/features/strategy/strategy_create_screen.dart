@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 class StrategyCreateScreen extends ConsumerStatefulWidget {
   const StrategyCreateScreen({super.key});

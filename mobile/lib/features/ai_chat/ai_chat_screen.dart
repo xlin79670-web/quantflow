@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 class AIChatScreen extends ConsumerStatefulWidget {
   const AIChatScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 class AIChatWebScreen extends ConsumerStatefulWidget {
   const AIChatWebScreen({super.key});

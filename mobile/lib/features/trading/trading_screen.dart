@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 final positionsProvider = FutureProvider<List<dynamic>>((ref) async {
   final api = ref.read(apiServiceProvider);

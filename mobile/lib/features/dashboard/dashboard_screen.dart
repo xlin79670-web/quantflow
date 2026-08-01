@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../shared/services/api_service.dart';
+import '../../shared/services/auth_service.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
