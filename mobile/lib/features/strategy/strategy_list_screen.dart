@@ -30,7 +30,7 @@ class StrategyListScreen extends ConsumerWidget {
       body: strategies.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('加载失败: $e')),
-        (strategies) {
+        data: (strategies) {
           if (strategies.isEmpty) {
             return Center(
               child: Column(
