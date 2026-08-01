@@ -52,7 +52,7 @@ class _PositionsTab extends ConsumerWidget {
     return positions.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(child: Text('加载失败: $e')),
-      (positions) {
+      data: (positions) {
         if (positions.isEmpty) {
           return const Center(
             child: Column(
