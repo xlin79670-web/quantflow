@@ -1,0 +1,62 @@
+name: quantflow
+description: QuantFlow - AI 驱动的量化交易平台
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 状态管理
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  
+  # 网络
+  dio: ^5.4.0
+  web_socket_channel: ^2.4.0
+  
+  # 路由
+  go_router: ^14.2.0
+  
+  # UI 组件
+  fl_chart: ^0.68.0            # 图表
+  flutter_slidable: ^3.1.0     # 滑动操作
+  shimmer: ^3.0.0              # 加载动画
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  
+  # 本地存储
+  shared_preferences: ^2.2.2
+  flutter_secure_storage: ^9.0.0
+  
+  # 工具
+  intl: ^0.19.0                # 日期/货币格式化
+  uuid: ^4.3.3
+  json_annotation: ^4.8.1
+  
+  # Markdown 渲染（AI 对话）
+  flutter_markdown: ^0.7.3
+  
+  # WebView (AI 对话嵌入)
+  webview_flutter: ^4.10.0
+  
+  # 代码高亮
+  flutter_highlight: ^0.7.0
+  highlight: ^0.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.8
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/images/

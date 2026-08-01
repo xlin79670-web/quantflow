@@ -1,0 +1,126 @@
+{
+  "evolution_time": "2026-08-01T17:13:29.798935",
+  "symbol": "BTCUSDT",
+  "timeframe": "1h",
+  "days": 90,
+  "baseline": {
+    "ma_cross": {
+      "name": "均线交叉 (5/20)",
+      "params": {
+        "fast": 5,
+        "slow": 20,
+        "sl": 0.03,
+        "tp": 0.06
+      },
+      "total_return": 14.8575,
+      "sharpe": 0.5931,
+      "win_rate": 37.31,
+      "max_drawdown": 28.3884,
+      "trades": 67
+    },
+    "rsi": {
+      "name": "RSI 反转 (14)",
+      "params": {
+        "period": 14,
+        "oversold": 30,
+        "overbought": 70,
+        "sl": 0.03,
+        "tp": 0.06
+      },
+      "total_return": 23.6145,
+      "sharpe": 1.1688,
+      "win_rate": 52.17,
+      "max_drawdown": 15.0082,
+      "trades": 23
+    },
+    "bollinger": {
+      "name": "布林带回归",
+      "params": {
+        "period": 20,
+        "std": 2.0,
+        "sl": 0.03,
+        "tp": 0.05
+      },
+      "total_return": 29.7187,
+      "sharpe": 1.5747,
+      "win_rate": 59.09,
+      "max_drawdown": 15.0082,
+      "trades": 22
+    },
+    "macd": {
+      "name": "MACD 趋势",
+      "params": {
+        "fast": 12,
+        "slow": 26,
+        "signal": 9,
+        "sl": 0.04,
+        "tp": 0.08
+      },
+      "total_return": 6.4154,
+      "sharpe": 0.3487,
+      "win_rate": 35.79,
+      "max_drawdown": 30.7198,
+      "trades": 95
+    }
+  },
+  "evolved": {
+    "ma_cross": {
+      "name": "均线交叉 (5/20)",
+      "params": {
+        "fast": 10,
+        "slow": 52,
+        "sl": 0.04,
+        "tp": 0.0819
+      },
+      "total_return": 61.4106,
+      "sharpe": 1.9325,
+      "win_rate": 57.14,
+      "max_drawdown": 8.2236,
+      "trades": 21
+    },
+    "rsi": {
+      "name": "RSI 反转 (14)",
+      "params": {
+        "period": 6,
+        "oversold": 33,
+        "overbought": 79,
+        "sl": 0.0301,
+        "tp": 0.0596
+      },
+      "total_return": 101.1845,
+      "sharpe": 2.5194,
+      "win_rate": 62.82,
+      "max_drawdown": 12.2349,
+      "trades": 78
+    },
+    "bollinger": {
+      "name": "布林带回归",
+      "params": {
+        "period": 22,
+        "std": 2.1263,
+        "sl": 0.0255,
+        "tp": 0.0628
+      },
+      "total_return": 62.9868,
+      "sharpe": 2.9934,
+      "win_rate": 66.67,
+      "max_drawdown": 5.4244,
+      "trades": 18
+    },
+    "macd": {
+      "name": "MACD 趋势",
+      "params": {
+        "fast": 14,
+        "slow": 27,
+        "signal": 9,
+        "sl": 0.0206,
+        "tp": 0.0607
+      },
+      "total_return": 45.2306,
+      "sharpe": 1.3224,
+      "win_rate": 37.5,
+      "max_drawdown": 20.4942,
+      "trades": 88
+    }
+  }
+}

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # ==================== Go 后端 API ====================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgres://quantflow:quantflow@postgres:5432/quantflow?sslmode=disable
+      - REDIS_URL=redis:6379
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - BINANCE_API_KEY=${BINANCE_API_KEY}
+      - BINANCE_SECRET_KEY=${BINANCE_SECRET_KEY}
+      - AI_SERVICE_URL=http://ai-engine:8000
+    depends_on:
+      - postgres
+      - redis
+      - ai-engine
+    restart: unless-stopped
+
+  # ==================== Python AI 引擎 ====================
+  ai-engine:
+    build:
+      context: ./ai_engine
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - QWEN_API_KEY=${QWEN_API_KEY}
+      - LOCAL_MODEL_PATH=${LOCAL_MODEL_PATH}
+    restart: unless-stopped
+
+  # ==================== PostgreSQL ====================
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: quantflow
+      POSTGRES_PASSWORD: quantflow
+      POSTGRES_DB: quantflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  # ==================== Redis ====================
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # ==================== MT4/MT5 Bridge ====================
+  mt-bridge:
+    build:
+      context: ./mt-bridge
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    environment:
+      - BRIDGE_PORT=9090
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

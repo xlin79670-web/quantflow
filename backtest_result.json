@@ -1,0 +1,272 @@
+{
+  "backtest_time": "2026-08-01T16:57:29.174258",
+  "symbol": "BTCUSDT",
+  "timeframe": "1h",
+  "days": 90,
+  "data_points": 2160,
+  "price_range": {
+    "min": 50177.370685897295,
+    "max": 204248.17393192113,
+    "last": 156839.98797411166
+  },
+  "results": [
+    {
+      "name": "布林带回归",
+      "total_return": 29.7187,
+      "annual_return": 190.6953,
+      "max_drawdown": 15.0082,
+      "sharpe_ratio": 3.0273,
+      "win_rate": 59.09,
+      "profit_factor": 1.9624,
+      "total_trades": 22,
+      "avg_win": 4.3474,
+      "avg_loss": -3.2
+    },
+    {
+      "name": "均线交叉 (8/30)",
+      "total_return": 30.2254,
+      "annual_return": 195.3803,
+      "max_drawdown": 20.2418,
+      "sharpe_ratio": 2.2988,
+      "win_rate": 42.11,
+      "profit_factor": 1.5152,
+      "total_trades": 38,
+      "avg_win": 5.463,
+      "avg_loss": -2.6222
+    },
+    {
+      "name": "RSI 反转 (14)",
+      "total_return": 23.6145,
+      "annual_return": 138.555,
+      "max_drawdown": 15.0082,
+      "sharpe_ratio": 2.2906,
+      "win_rate": 52.17,
+      "profit_factor": 1.6607,
+      "total_trades": 23,
+      "avg_win": 4.8713,
+      "avg_loss": -3.2
+    },
+    {
+      "name": "均线交叉 (5/20)",
+      "total_return": 14.8575,
+      "annual_return": 76.4902,
+      "max_drawdown": 28.3884,
+      "sharpe_ratio": 1.1883,
+      "win_rate": 37.31,
+      "profit_factor": 1.1781,
+      "total_trades": 67,
+      "avg_win": 4.9768,
+      "avg_loss": -2.5146
+    },
+    {
+      "name": "RSI+成交量",
+      "total_return": 6.0063,
+      "annual_return": 27.0247,
+      "max_drawdown": 6.2976,
+      "sharpe_ratio": 0.9902,
+      "win_rate": 46.15,
+      "profit_factor": 1.3098,
+      "total_trades": 13,
+      "avg_win": 4.8899,
+      "avg_loss": -3.2
+    },
+    {
+      "name": "MACD 趋势",
+      "total_return": 6.4154,
+      "annual_return": 29.0474,
+      "max_drawdown": 30.7198,
+      "sharpe_ratio": 0.7063,
+      "win_rate": 35.79,
+      "profit_factor": 1.0946,
+      "total_trades": 95,
+      "avg_win": 4.52,
+      "avg_loss": -2.3016
+    },
+    {
+      "name": "RSI 反转 (7)",
+      "total_return": 2.4566,
+      "annual_return": 10.4653,
+      "max_drawdown": 10.5265,
+      "sharpe_ratio": 0.4406,
+      "win_rate": 40.0,
+      "profit_factor": 1.0736,
+      "total_trades": 45,
+      "avg_win": 3.5428,
+      "avg_loss": -2.2
+    },
+    {
+      "name": "双均线+RSI确认",
+      "total_return": 2.2593,
+      "annual_return": 9.5954,
+      "max_drawdown": 21.7867,
+      "sharpe_ratio": 0.4366,
+      "win_rate": 34.62,
+      "profit_factor": 1.0699,
+      "total_trades": 52,
+      "avg_win": 5.2187,
+      "avg_loss": -2.5823
+    }
+  ],
+  "parameter_sensitivity": [
+    {
+      "fast": 3,
+      "slow": 15,
+      "return": 12.891,
+      "sharpe": 1.0685,
+      "win_rate": 35.29,
+      "trades": 102
+    },
+    {
+      "fast": 3,
+      "slow": 20,
+      "return": 55.9228,
+      "sharpe": 3.0384,
+      "win_rate": 39.24,
+      "trades": 79
+    },
+    {
+      "fast": 3,
+      "slow": 30,
+      "return": 41.6439,
+      "sharpe": 2.6903,
+      "win_rate": 41.07,
+      "trades": 56
+    },
+    {
+      "fast": 3,
+      "slow": 50,
+      "return": 42.7746,
+      "sharpe": 2.7786,
+      "win_rate": 40.91,
+      "trades": 44
+    },
+    {
+      "fast": 5,
+      "slow": 15,
+      "return": 14.5917,
+      "sharpe": 1.1639,
+      "win_rate": 40.24,
+      "trades": 82
+    },
+    {
+      "fast": 5,
+      "slow": 20,
+      "return": 14.8575,
+      "sharpe": 1.1883,
+      "win_rate": 37.31,
+      "trades": 67
+    },
+    {
+      "fast": 5,
+      "slow": 30,
+      "return": 29.631,
+      "sharpe": 2.088,
+      "win_rate": 39.58,
+      "trades": 48
+    },
+    {
+      "fast": 5,
+      "slow": 50,
+      "return": 18.8695,
+      "sharpe": 1.7132,
+      "win_rate": 40.0,
+      "trades": 30
+    },
+    {
+      "fast": 8,
+      "slow": 15,
+      "return": 18.9811,
+      "sharpe": 1.4343,
+      "win_rate": 41.03,
+      "trades": 78
+    },
+    {
+      "fast": 8,
+      "slow": 20,
+      "return": 19.1913,
+      "sharpe": 1.4937,
+      "win_rate": 41.38,
+      "trades": 58
+    },
+    {
+      "fast": 8,
+      "slow": 30,
+      "return": 30.2254,
+      "sharpe": 2.2988,
+      "win_rate": 42.11,
+      "trades": 38
+    },
+    {
+      "fast": 8,
+      "slow": 50,
+      "return": 29.9254,
+      "sharpe": 2.4542,
+      "win_rate": 46.15,
+      "trades": 26
+    },
+    {
+      "fast": 10,
+      "slow": 15,
+      "return": 48.4633,
+      "sharpe": 2.6648,
+      "win_rate": 48.15,
+      "trades": 81
+    },
+    {
+      "fast": 10,
+      "slow": 20,
+      "return": 1.086,
+      "sharpe": 0.3583,
+      "win_rate": 36.07,
+      "trades": 61
+    },
+    {
+      "fast": 10,
+      "slow": 30,
+      "return": 23.7427,
+      "sharpe": 1.9305,
+      "win_rate": 42.11,
+      "trades": 38
+    },
+    {
+      "fast": 10,
+      "slow": 50,
+      "return": 35.775,
+      "sharpe": 3.0856,
+      "win_rate": 52.38,
+      "trades": 21
+    },
+    {
+      "fast": 13,
+      "slow": 15,
+      "return": 32.5441,
+      "sharpe": 2.1575,
+      "win_rate": 42.2,
+      "trades": 109
+    },
+    {
+      "fast": 13,
+      "slow": 20,
+      "return": 35.0992,
+      "sharpe": 2.3073,
+      "win_rate": 40.62,
+      "trades": 64
+    },
+    {
+      "fast": 13,
+      "slow": 30,
+      "return": 12.1766,
+      "sharpe": 1.1918,
+      "win_rate": 44.12,
+      "trades": 34
+    },
+    {
+      "fast": 13,
+      "slow": 50,
+      "return": 27.6482,
+      "sharpe": 2.5608,
+      "win_rate": 52.38,
+      "trades": 21
+    }
+  ]
+}

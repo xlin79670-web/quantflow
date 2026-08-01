@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantFlow AI 助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a1a;
+            --surface: #12122a;
+            --card: #1a1a3e;
+            --border: #2a2a5a;
+            --primary: #6c5ce7;
+            --accent: #00d2d3;
+            --text: #e0e0ff;
+            --text-dim: #8888aa;
+            --profit: #00b894;
+            --loss: #ff6b6b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 顶栏 ===== */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .header .logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .header .title { font-weight: 700; font-size: 16px; }
+        .header .subtitle { font-size: 12px; color: var(--text-dim); }
+
+        .header .actions { margin-left: auto; display: flex; gap: 8px; }
+
+        .header .actions button {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .header .actions button:hover { background: var(--primary); border-color: var(--primary); }
+
+        /* ===== 快捷操作 ===== */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            padding: 10px 20px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quick-actions .chip {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .quick-actions .chip:hover { background: var(--primary); border-color: var(--primary); }
+
+        /* ===== 消息区 ===== */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 85%;
+            display: flex;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .message.user { align-self: flex-end; flex-direction: row-reverse; }
+        .message.assistant { align-self: flex-start; }
+
+        .message .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.user .avatar { background: var(--primary); }
+        .message.assistant .avatar { background: linear-gradient(135deg, var(--primary), var(--accent)); }
+
+        .message .bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .message.user .bubble {
+            background: var(--primary);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .bubble {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message .bubble pre {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message .bubble code {
+            background: rgba(108, 92, 231, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .message .bubble pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .message .time {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .message.user .time { text-align: right; }
+
+        /* ===== 打字指示器 ===== */
+        .typing { display: flex; gap: 4px; padding: 8px 0; }
+        .typing .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-dim);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        .typing .dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-8px); } }
+
+        /* ===== 代码上传区 ===== */
+        .code-upload {
+            display: none;
+            background: var(--surface);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            margin: 0 20px 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .code-upload:hover { border-color: var(--accent); background: var(--card); }
+        .code-upload.active { border-color: var(--accent); display: block; }
+        .code-upload .icon { font-size: 32px; margin-bottom: 8px; }
+        .code-upload .text { color: var(--text-dim); font-size: 14px; }
+        .code-upload .hint { color: var(--text-dim); font-size: 12px; margin-top: 4px; }
+
+        .code-upload input[type="file"] { display: none; }
+
+        /* ===== 输入区 ===== */
+        .input-area {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            flex-shrink: 0;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .input-row textarea {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-row textarea:focus { border-color: var(--primary); }
+        .input-row textarea::placeholder { color: var(--text-dim); }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover { transform: scale(1.05); }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .input-hint {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        /* ===== 设置面板 ===== */
+        .settings-panel {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-panel.active { display: flex; }
+
+        .settings-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .settings-box h3 { margin-bottom: 16px; }
+
+        .settings-box label {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .settings-box label span {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .settings-box input {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .settings-box input:focus { border-color: var(--primary); }
+
+        .settings-box .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .settings-box .btn-row button {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .settings-box .btn-row .primary-btn {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 600px) {
+            .message { max-width: 95%; }
+            .header .subtitle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶栏 -->
+<div class="header">
+    <div class="logo">⚡</div>
+    <div>
+        <div class="title">QuantFlow AI</div>
+        <div class="subtitle">量化交易智能助手</div>
+    </div>
+    <div class="actions">
+        <button onclick="uploadEA()">📎 上传 EA</button>
+        <button onclick="clearChat()">🗑️ 清空</button>
+        <button onclick="openSettings()">⚙️ 设置</button>
+    </div>
+</div>
+
+<!-- 快捷操作 -->
+<div class="quick-actions">
+    <div class="chip" onclick="sendQuick('分析 BTC 当前市场走势，给出交易建议')">📊 市场分析</div>
+    <div class="chip" onclick="sendQuick('帮我生成一个 RSI+成交量的量化策略')">🎯 生成策略</div>
+    <div class="chip" onclick="sendQuick('评估我当前持仓的风险')">🛡️ 风险评估</div>
+    <div class="chip" onclick="sendQuick('帮我优化均线交叉策略的参数')">🔬 优化参数</div>
+    <div class="chip" onclick="sendQuick('解释一下什么是夏普比率和最大回撤')">📚 概念解释</div>
+    <div class="chip" onclick="uploadEA()">📎 分析 EA 代码</div>
+</div>
+
+<!-- 代码上传区 -->
+<div class="code-upload" id="codeUpload" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">📄</div>
+    <div class="text">点击或拖拽上传 EA 源码 (.mq4 / .mq5 / .txt)</div>
+    <div class="hint">AI 将分析代码逻辑、风险点并给出优化建议</div>
+    <input type="file" id="fileInput" accept=".mq4,.mq5,.txt,.py,.js" onchange="handleFile(event)">
+</div>
+
+<!-- 消息区 -->
+<div class="messages" id="messages">
+    <div class="message assistant">
+        <div class="avatar">⚡</div>
+        <div>
+            <div class="bubble">
+                👋 你好！我是 QuantFlow AI 交易助手。<br><br>
+                我可以帮你：<br>
+                • 📊 <b>分析市场</b> — 解读行情、新闻、链上数据<br>
+                • 🎯 <b>生成策略</b> — 用自然语言描述，AI 自动生成代码<br>
+                • 🔬 <b>优化策略</b> — 分析表现，提出改进方案<br>
+                • 📎 <b>分析 EA</b> — 上传 MT4/5 EA 源码，我来学习分析<br>
+                • 🛡️ <b>风险评估</b> — 评估持仓风险，给出建议<br><br>
+                有什么想问的？直接输入或者点击上方快捷按钮。
+            </div>
+            <div class="time">刚刚</div>
+        </div>
+    </div>
+</div>
+
+<!-- 输入区 -->
+<div class="input-area">
+    <div class="input-row">
+        <textarea id="input" rows="1" placeholder="输入消息... (Shift+Enter 换行，Enter 发送)"
+                  onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="input-hint">
+        <span>Shift+Enter 换行 · Enter 发送 · 支持粘贴代码</span>
+        <span id="status">就绪</span>
+    </div>
+</div>
+
+<!-- 设置面板 -->
+<div class="settings-panel" id="settingsPanel" onclick="if(event.target===this)closeSettings()">
+    <div class="settings-box">
+        <h3>⚙️ 连接设置</h3>
+        <label>
+            <span>AI 服务地址</span>
+            <input id="apiUrl" value="http://localhost:8000" placeholder="http://localhost:8000">
+        </label>
+        <label>
+            <span>后端 API 地址</span>
+            <input id="backendUrl" value="http://localhost:8080" placeholder="http://localhost:8080">
+        </label>
+        <label>
+            <span>认证 Token (可选)</span>
+            <input id="authToken" type="password" placeholder="JWT Token">
+        </label>
+        <div class="btn-row">
+            <button onclick="closeSettings()">取消</button>
+            <button class="primary-btn" onclick="saveSettings()">保存</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== 配置 =====
+let config = {
+    apiUrl: localStorage.getItem('apiUrl') || 'http://localhost:8000',
+    backendUrl: localStorage.getItem('backendUrl') || 'http://localhost:8080',
+    authToken: localStorage.getItem('authToken') || '',
+};
+
+// ===== 状态 =====
+let isLoading = false;
+
+// ===== 初始化 =====
+document.getElementById('apiUrl').value = config.apiUrl;
+document.getElementById('backendUrl').value = config.backendUrl;
+document.getElementById('authToken').value = config.authToken;
+
+// ===== 发送消息 =====
+async function sendMessage() {
+    const input = document.getElementById('input');
+    const text = input.value.trim();
+    if (!text || isLoading) return;
+
+    // 显示用户消息
+    addMessage('user', text);
+    input.value = '';
+    autoResize(input);
+
+    // 调用 AI
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+    document.getElementById('status').textContent = 'AI 思考中...';
+    showTyping();
+
+    try {
+        const response = await callAI(text);
+        hideTyping();
+        addMessage('assistant', response);
+    } catch (e) {
+        hideTyping();
+        addMessage('assistant', `⚠️ 连接 AI 服务失败: ${e.message}\n\n请检查:\n1. AI 服务是否启动 (http://localhost:8000)\n2. 网络连接是否正常\n\n可以在设置中修改 AI 服务地址。`);
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('status').textContent = '就绪';
+}
+
+// ===== 调用 AI API =====
+async function callAI(message) {
+    // 方式 1: 直接调用 AI Engine
+    const resp = await fetch(`${config.apiUrl}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            message: message,
+            user_id: 'web-user',
+        }),
+    });
+
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+    const data = await resp.json();
+    return data.response || data.message || JSON.stringify(data);
+}
+
+// ===== 快捷操作 =====
+function sendQuick(text) {
+    document.getElementById('input').value = text;
+    sendMessage();
+}
+
+// ===== 上传 EA =====
+function uploadEA() {
+    const panel = document.getElementById('codeUpload');
+    panel.classList.toggle('active');
+    if (panel.classList.contains('active')) {
+        document.getElementById('input').placeholder = '或直接在这里粘贴 EA 代码...';
+    }
+}
+
+function handleFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const code = e.target.result;
+        const prompt = `请分析以下 MT4/5 EA 源码:\n\n1. 解释代码的主要逻辑和策略\n2. 指出潜在的风险点和 bug\n3. 给出优化建议\n4. 评估策略的可行性\n\n文件: ${file.name}\n\n\`\`\`\n${code}\n\`\`\``;
+
+        document.getElementById('input').value = prompt;
+        document.getElementById('codeUpload').classList.remove('active');
+        sendMessage();
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+// ===== 添加消息 =====
+function addMessage(role, content) {
+    const container = document.getElementById('messages');
+    const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+
+    const div = document.createElement('div');
+    div.className = `message ${role}`;
+
+    // 简单 Markdown 渲染
+    let html = content
+        .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+        .replace(/\n/g, '<br>');
+
+    div.innerHTML = `
+        <div class="avatar">${role === 'user' ? '👤' : '⚡'}</div>
+        <div>
+            <div class="bubble">${html}</div>
+            <div class="time">${time}</div>
+        </div>
+    `;
+
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+// ===== 打字指示器 =====
+function showTyping() {
+    const container = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'message assistant';
+    div.id = 'typing';
+    div.innerHTML = `
+        <div class="avatar">⚡</div>
+        <div class="bubble">
+            <div class="typing">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function hideTyping() {
+    const el = document.getElementById('typing');
+    if (el) el.remove();
+}
+
+// ===== 工具函数 =====
+function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+}
+
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function clearChat() {
+    if (!confirm('确定清空所有对话?')) return;
+    const container = document.getElementById('messages');
+    container.innerHTML = '';
+    addMessage('assistant', '对话已清空。有什么想问的？');
+}
+
+function openSettings() {
+    document.getElementById('settingsPanel').classList.add('active');
+}
+
+function closeSettings() {
+    document.getElementById('settingsPanel').classList.remove('active');
+}
+
+function saveSettings() {
+    config.apiUrl = document.getElementById('apiUrl').value.replace(/\/$/, '');
+    config.backendUrl = document.getElementById('backendUrl').value.replace(/\/$/, '');
+    config.authToken = document.getElementById('authToken').value;
+
+    localStorage.setItem('apiUrl', config.apiUrl);
+    localStorage.setItem('backendUrl', config.backendUrl);
+    localStorage.setItem('authToken', config.authToken);
+
+    closeSettings();
+    addMessage('assistant', `✅ 设置已保存\n\nAI 服务: ${config.apiUrl}\n后端 API: ${config.backendUrl}`);
+}
+
+// ===== 拖拽上传 =====
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+        const input = document.getElementById('fileInput');
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        handleFile({ target: input });
+    }
+});
+
+// ===== 粘贴代码检测 =====
+document.getElementById('input').addEventListener('paste', (e) => {
+    const text = e.clipboardData.getData('text');
+    if (text.includes('void OnTick') || text.includes('int OnInit') || text.includes('#property')) {
+        // 检测到 EA 代码，自动包装
+        e.preventDefault();
+        const prompt = `请分析以下 EA 代码:\n\n\`\`\`\n${text}\n\`\`\`\n\n请分析: 1)策略逻辑 2)风险点 3)优化建议`;
+        document.getElementById('input').value = prompt;
+    }
+});
+</script>
+</body>
+</html>
