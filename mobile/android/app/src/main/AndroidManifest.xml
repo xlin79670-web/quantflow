@@ -45,10 +45,4 @@
             android:value="2"/>
     </application>
 
-    <!-- 允许 HTTP (开发用) -->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">10.0.2.2</domain>
-        <domain includeSubdomains="true">192.168.0.0/16</domain>
-    </domain-config>
 </manifest>
