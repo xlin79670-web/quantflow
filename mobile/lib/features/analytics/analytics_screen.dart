@@ -55,7 +55,7 @@ class _MetricsGrid extends ConsumerWidget {
     return analytics.when(
       loading: () => const Card(child: SizedBox(height: 120, child: Center(child: CircularProgressIndicator()))),
       error: (e, _) => const SizedBox.shrink(),
-      (data: data) {
+      data: (data) {
         return GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

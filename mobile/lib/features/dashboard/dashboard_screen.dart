@@ -91,7 +91,7 @@ class _OverviewCard extends ConsumerWidget {
     return data.when(
       loading: () => const Card(child: SizedBox(height: 160, child: Center(child: CircularProgressIndicator()))),
       error: (e, _) => Card(child: SizedBox(height: 160, child: Center(child: Text('加载失败: $e')))),
-      (data: data) {
+      data: (data) {
         final overview = data['overview'] as Map<String, dynamic>? ?? {};
         final ticker = data['ticker'] as Map<String, dynamic>? ?? {};
         final totalReturn = (overview['total_return'] as num?)?.toDouble() ?? 0;
@@ -237,7 +237,7 @@ class _StrategyStatusList extends ConsumerWidget {
     return data.when(
       loading: () => const Card(child: SizedBox(height: 100, child: Center(child: CircularProgressIndicator()))),
       error: (e, _) => const SizedBox.shrink(),
-      (data: data) {
+      data: (data) {
         final strategies = (data['strategies'] as List?)?.take(3).toList() ?? [];
         if (strategies.isEmpty) {
           return Card(
@@ -310,7 +310,7 @@ class _RecentTradesList extends ConsumerWidget {
     return data.when(
       loading: () => const Card(child: SizedBox(height: 100, child: Center(child: CircularProgressIndicator()))),
       error: (e, _) => const SizedBox.shrink(),
-      (data: data) {
+      data: (data) {
         final trades = (data['trades'] as List?)?.take(5).toList() ?? [];
         if (trades.isEmpty) {
           return const Card(
