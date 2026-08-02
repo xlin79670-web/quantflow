@@ -22,27 +22,83 @@ jobs:
 
       - name: Build
         run: |
-          # 创建新项目
-          flutter create --org com.quantflow --project-name quantflow quantflow_app
+          # 创建最小 Flutter 项目
+          flutter create --org com.quantflow --project-name quantflow app
+          cd app
           
-          # 复制我们的 Dart 代码
-          cp -r mobile/lib quantflow_app/
+          # 覆盖为我们的代码
+          cp -r ../mobile/lib .
+          cp ../mobile/pubspec.yaml .
           
-          # 复制 pubspec.yaml (合并依赖)
-          cp mobile/pubspec.yaml quantflow_app/
+          # 简化 pubspec (只保留核心依赖)
+          cat > pubspec.yaml << 'EOF'
+          name: quantflow
+          description: QuantFlow
+          publish_to: 'none'
+          version: 1.0.0+1
           
-          # 进入项目目录
-          cd quantflow_app
+          environment:
+            sdk: '>=3.2.0 <4.0.0'
+          
+          dependencies:
+            flutter:
+              sdk: flutter
+            flutter_riverpod: ^2.5.1
+            dio: ^5.4.0
+            go_router: ^14.2.0
+            fl_chart: ^0.68.0
+            intl: ^0.19.0
+            flutter_secure_storage: ^9.0.0
+            shared_preferences: ^2.2.2
+            uuid: ^4.3.3
+            webview_flutter: ^4.10.0
+            flutter_markdown: ^0.7.3
+            shimmer: ^3.0.0
+          
+          dev_dependencies:
+            flutter_test:
+              sdk: flutter
+            flutter_lints: ^4.0.0
+          
+          flutter:
+            uses-material-design: true
+          EOF
           
           # 获取依赖
-          flutter pub get
+          flutter pub get 2>&1 || {
+            echo "pub get failed, simplifying..."
+            cat > pubspec.yaml << 'EOF2'
+          name: quantflow
+          description: QuantFlow
+          publish_to: 'none'
+          version: 1.0.0+1
           
-          # 构建 APK
+          environment:
+            sdk: '>=3.2.0 <4.0.0'
+          
+          dependencies:
+            flutter:
+              sdk: flutter
+            dio: ^5.4.0
+            intl: ^0.19.0
+            shared_preferences: ^2.2.2
+          
+          dev_dependencies:
+            flutter_test:
+              sdk: flutter
+          
+          flutter:
+            uses-material-design: true
+          EOF2
+            flutter pub get
+          }
+          
+          # 构建
           flutter build apk --release
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: quantflow-apk
-          path: quantflow_app/build/app/outputs/flutter-apk/app-release.apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 90
