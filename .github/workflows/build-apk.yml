@@ -20,16 +20,20 @@ jobs:
         with:
           flutter-version: 3.24.5
 
-      - name: Init Flutter Project
-        working-directory: mobile
-        run: |
-          # 创建缺失的平台文件 (Android/iOS/macOS/Linux/Windows/Web)
-          flutter create --org com.quantflow --project-name quantflow --platforms android . 2>&1 || true
-          flutter pub get
-
       - name: Build APK
         working-directory: mobile
-        run: flutter build apk --release --no-tree-shake-icons
+        run: |
+          # 确保依赖
+          flutter pub get
+          # 构建 APK
+          flutter build apk --release --no-tree-shake-icons 2>&1 || {
+            echo "=== flutter build 失败, 尝试 flutter create 补全 ==="
+            cd ..
+            flutter create --org com.quantflow --project-name quantflow --platforms android . 2>&1
+            cd mobile
+            flutter pub get
+            flutter build apk --release --no-tree-shake-icons
+          }
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
