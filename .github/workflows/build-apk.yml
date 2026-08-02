@@ -69,9 +69,21 @@ jobs:
           DARTEOF
           flutter build apk --release
 
+      - name: Find APK
+        id: find-apk
+        run: |
+          APK_PATH=$(find . -name "*.apk" -type f 2>/dev/null | head -1)
+          if [ -z "$APK_PATH" ]; then
+            echo "apk_path=" >> $GITHUB_OUTPUT
+          else
+            echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+            echo "Found APK: $APK_PATH"
+          fi
+
       - name: Upload
+        if: steps.find-apk.outputs.apk_path != ''
         uses: actions/upload-artifact@v4
         with:
           name: quantflow-apk
-          path: app/build/outputs/flutter-apk/app-release.apk
+          path: ${{ steps.find-apk.outputs.apk_path }}
           retention-days: 90
