@@ -20,35 +20,29 @@ jobs:
         with:
           flutter-version: 3.24.5
 
-      - name: Init & Build
+      - name: Build
         run: |
-          # 复制 Dart 源码
-          cp -r mobile/lib /tmp/quantflow_lib
-          cp mobile/pubspec.yaml /tmp/pubspec.yaml
+          # 创建新项目
+          flutter create --org com.quantflow --project-name quantflow quantflow_app
           
-          # 创建完整 Flutter 项目
-          cd /tmp
-          flutter create --org com.quantflow --project-name quantflow --platforms android quantflow_proj
+          # 复制我们的 Dart 代码
+          cp -r mobile/lib quantflow_app/
           
-          # 覆盖为我们的代码
-          cd quantflow_proj
-          rm -rf lib
-          cp -r /tmp/quantflow_lib lib
-          cp /tmp/pubspec.yaml pubspec.yaml
+          # 复制 pubspec.yaml (合并依赖)
+          cp mobile/pubspec.yaml quantflow_app/
+          
+          # 进入项目目录
+          cd quantflow_app
           
           # 获取依赖
           flutter pub get
           
-          # 构建
-          flutter build apk --release --no-tree-shake-icons
-          
-          # 复制 APK
-          mkdir -p $GITHUB_WORKSPACE/output
-          cp build/app/outputs/flutter-apk/app-release.apk $GITHUB_WORKSPACE/quantflow.apk
+          # 构建 APK
+          flutter build apk --release
 
-      - name: Upload APK
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: quantflow-apk
-          path: quantflow.apk
+          path: quantflow_app/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 90
