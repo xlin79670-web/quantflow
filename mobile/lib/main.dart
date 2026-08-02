@@ -129,7 +129,7 @@ class _Strategy extends StatelessWidget {
             _snack(context, '${s['name']} → ${newStatus == 'running' ? '已启动' : '已暂停'}');
           }),
           onTap: () => _showStrategyDetail(context, s['name'] as String, s['info'] as String, s['status'] as String),
-        );
+        )));
       })),
       floatingActionButton: FloatingActionButton.extended(onPressed: () => _showCreate(context), icon: const Icon(Icons.auto_awesome), label: const Text('AI 生成'), backgroundColor: const Color(0xFF00D2D3)),
     );
