@@ -73,5 +73,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quantflow-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+          path: app/build/outputs/flutter-apk/app-release.apk
           retention-days: 90
