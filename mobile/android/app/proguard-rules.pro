@@ -1,0 +1,2 @@
+-dontwarn io.flutter.embedding.**
+-keep class io.flutter.** { *; }

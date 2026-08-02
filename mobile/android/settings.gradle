@@ -1,0 +1,4 @@
+include: app
+
+set(new FlutterDir, "$rootProject/../flutter")
+apply from: "$newFlutterDir/packages/flutter_tools/gradle/app_plugin_loader.gradle"
