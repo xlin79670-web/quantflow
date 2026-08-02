@@ -2,84 +2,64 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>QuantFlow</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:pan-y}
-:root{--bg:#0a0a1a;--s:#12122a;--c:#1a1a3e;--b:#2a2a5a;--p:#6c5ce7;--a:#00d2d3;--t:#e0e0ff;--d:#8888aa;--g:#00b894;--r:#ff6b6b;--w:#feca57}
+:root{--bg:#0a0a1a;--s:#12122a;--c:#1a1a3e;--b:#2a2a5a;--p:#6c5ce7;--a:#00d2d3;--t:#e0e0ff;--d:#9a9abf;--g:#00b894;--r:#ff6b6b;--w:#feca57;--safe-b:env(safe-area-inset-bottom,0px)}
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);display:flex;flex-direction:column}
-
-/* 主容器 */
 .app{display:flex;flex-direction:column;height:100%;max-width:500px;margin:0 auto;position:relative;overflow:hidden}
-
-/* 页面容器 */
 .pages{flex:1;position:relative;overflow:hidden}
-.page{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;padding:16px;padding-bottom:70px}
+.page{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;padding:16px;padding-bottom:calc(70px + var(--safe-b))}
 .page.active{display:block;z-index:1}
-
-/* 底部导航 */
-.nav{position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:var(--s);border-top:1px solid var(--b);display:flex;z-index:100;user-select:none}
-.nav-item{flex:1;padding:8px 0 6px;text-align:center;color:var(--d);font-size:10px;cursor:pointer;transition:.2s}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;background:var(--s);border-top:1px solid var(--b);display:flex;z-index:100;user-select:none;padding-bottom:var(--safe-b)}
+.nav-item{flex:1;padding:10px 0 8px;text-align:center;color:var(--d);font-size:10px;cursor:pointer;transition:.2s;min-height:48px}
 .nav-item.active{color:var(--a)}
-.nav-item .icon{font-size:20px;margin-bottom:2px;pointer-events:none}
-
-/* 通用组件 */
+.nav-item .icon{font-size:22px;margin-bottom:2px;pointer-events:none}
 .card{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:16px;margin-bottom:12px}
-.btn{padding:8px 16px;border-radius:8px;border:none;color:white;font-size:13px;cursor:pointer;transition:.15s;user-select:none}
+.btn{padding:10px 18px;border-radius:8px;border:none;color:white;font-size:14px;cursor:pointer;transition:.15s;user-select:none;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:active{transform:scale(.95);opacity:.8}
-.btn-p{background:var(--p)}
-.btn-a{background:var(--a)}
-.btn-r{background:var(--r)}
+.btn-p{background:var(--p);box-shadow:0 0 12px rgba(108,92,231,.3)}
+.btn-a{background:var(--a);box-shadow:0 0 12px rgba(0,210,211,.3)}
+.btn-r{background:var(--r);box-shadow:0 0 12px rgba(255,107,107,.3)}
 .btn-o{background:var(--c);border:1px solid var(--b);color:var(--t)}
 .btn-full{width:100%;padding:12px;font-size:15px}
 .row{display:flex;gap:8px;align-items:center}
 .row-between{display:flex;justify-content:space-between;align-items:center}
 .text-sm{font-size:12px}.text-xs{font-size:11px}
 .text-dim{color:var(--d)}.text-g{color:var(--g)}.text-r{color:var(--r)}.text-w{color:var(--w)}.text-a{color:var(--a)}.text-center{text-align:center}.bold{font-weight:700}
-
-/* 表单 */
-input,select,textarea{background:var(--c);border:1px solid var(--b);border-radius:8px;padding:10px 12px;color:var(--t);font-size:14px;width:100%;outline:none;font-family:inherit;-webkit-appearance:none}
-input:focus,select:focus,textarea:focus{border-color:var(--p)}
+input,select,textarea{background:var(--c);border:1px solid var(--b);border-radius:8px;padding:10px 12px;color:var(--t);font-size:14px;width:100%;outline:none;font-family:inherit;-webkit-appearance:none;min-height:44px}
+input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(108,92,231,.2)}
 label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
 .form-group{margin-bottom:12px}
-
-/* 开关 */
-.switch{position:relative;width:44px;height:24px;flex-shrink:0;display:inline-block}
+.switch{position:relative;width:48px;height:28px;flex-shrink:0;display:inline-block}
 .switch input{opacity:0;width:0;height:0;position:absolute}
-.switch .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--b);border-radius:12px;cursor:pointer;transition:.3s}
-.switch .slider:before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s}
+.switch .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--b);border-radius:14px;cursor:pointer;transition:.3s}
+.switch .slider:before{content:'';position:absolute;height:22px;width:22px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .switch input:checked+.slider{background:var(--p)}
 .switch input:checked+.slider:before{transform:translateX(20px)}
-
-/* 徽章 */
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700}
 .badge-g{background:var(--g);color:#000}.badge-r{background:var(--r);color:#fff}.badge-w{background:var(--w);color:#000}.badge-a{background:var(--a);color:#000}
-
-/* 芯片 */
-.chip{display:inline-block;padding:6px 12px;border-radius:20px;background:var(--c);border:1px solid var(--b);font-size:12px;cursor:pointer;white-space:nowrap;user-select:none}
+.chip{display:inline-flex;align-items:center;padding:10px 16px;border-radius:20px;background:var(--c);border:1px solid var(--b);font-size:13px;cursor:pointer;white-space:nowrap;user-select:none;min-height:44px}
 .chip:active{background:var(--p)}
 .chip.active{background:var(--p);border-color:var(--p)}
-
-/* Toast */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--c);border:1px solid var(--a);color:var(--t);padding:10px 20px;border-radius:10px;z-index:999;font-size:13px;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1}
-
-/* 弹窗 */
-.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:200;justify-content:center;align-items:flex-end}
-.modal.active{display:flex}
-.modal-box{background:var(--s);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:500px;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--s);border:1px solid var(--a);color:var(--t);padding:10px 20px;border-radius:10px;z-index:999;font-size:13px;opacity:0;transition:.3s cubic-bezier(.32,.72,0,1);pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0);z-index:200;justify-content:center;transition:.3s}
+.modal.active{display:flex;background:rgba(0,0,0,.6)}
+.modal-box{background:var(--s);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:500px;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:.35s cubic-bezier(.32,.72,0,1);padding-bottom:calc(20px + var(--safe-b))}
+.modal.active .modal-box{transform:translateY(0)}
 .modal-center{align-items:center}
-.modal-center .modal-box{border-radius:16px;max-width:400px;margin:0 20px;max-height:90vh}
+.modal-center .modal-box{border-radius:16px;max-width:400px;margin:0 20px;transform:translateY(40px) scale(.95);opacity:0}
+.modal-center.active .modal-box{transform:translateY(0) scale(1);opacity:1}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .modal-head h3{font-size:18px}
-.close-btn{background:none;border:none;color:var(--d);font-size:24px;cursor:pointer;padding:4px;user-select:none}
-
-/* 设置页 */
+.close-btn{background:none;border:none;color:var(--d);font-size:24px;cursor:pointer;padding:8px;user-select:none;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
 .section-title{font-size:12px;font-weight:600;color:var(--d);margin:16px 0 8px;text-transform:uppercase;letter-spacing:.5px}
-.setting-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--b);cursor:pointer;user-select:none}
+.setting-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid rgba(42,42,90,.5);cursor:pointer;user-select:none;min-height:48px}
 .setting-item:last-child{border:none}
 .setting-item:active{background:rgba(255,255,255,.03)}
 .setting-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-right:12px;font-size:18px;flex-shrink:0}
@@ -88,46 +68,44 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
 .setting-info .sub{font-size:12px;color:var(--d);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setting-right{color:var(--d);font-size:13px;display:flex;align-items:center;gap:4px;flex-shrink:0}
 .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0}
-
-/* 图表 */
 .hbar{height:180px;display:flex;align-items:flex-end;gap:4px;padding:0 4px}
 .hbar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.hbar-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px}
-.hbar-label{font-size:9px;color:var(--d)}
-.hbar-val{font-size:9px;font-weight:700}
-
-/* AI 聊天 */
+.hbar-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:.5s}
+.hbar-label{font-size:9px;color:var(--d)}.hbar-val{font-size:9px;font-weight:700}
 .chat-page{display:flex;flex-direction:column;height:100%}
 .chat-header{flex-shrink:0;padding:16px;padding-bottom:8px}
 .chat-chips{flex-shrink:0;display:flex;gap:8px;overflow-x:auto;padding:0 16px 8px;-webkit-overflow-scrolling:touch}
 .chat-messages{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px 12px;display:flex;flex-direction:column;gap:8px}
-.chat-input{flex-shrink:0;display:flex;gap:8px;padding:12px 16px;background:var(--s);border-top:1px solid var(--b)}
-.chat-input input{flex:1;border-radius:24px;padding:10px 16px}
-.send-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));border:none;color:white;font-size:18px;cursor:pointer;flex-shrink:0}
+.chat-input{flex-shrink:0;display:flex;gap:8px;padding:12px 16px;background:var(--s);border-top:1px solid var(--b);padding-bottom:calc(12px + var(--safe-b))}
+.chat-input input{flex:1;border-radius:24px;padding:10px 16px;min-height:44px}
+.send-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));border:none;color:white;font-size:18px;cursor:pointer;flex-shrink:0}
 .msg{max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;word-break:break-word}
 .msg-user{align-self:flex-end;background:var(--p);border-bottom-right-radius:4px}
 .msg-bot{align-self:flex-start;background:var(--c);border:1px solid var(--b);border-bottom-left-radius:4px}
+.loading-dots{display:flex;gap:4px;padding:8px 0}
+.loading-dots span{width:8px;height:8px;background:var(--d);border-radius:50%;animation:bounce 1.4s infinite}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+.list-item-active{background:rgba(108,92,231,.15)!important;border-left:3px solid var(--p)}
+input[type=range]{-webkit-appearance:none;height:6px;background:var(--b);border-radius:3px;border:none;min-height:auto;padding:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--p);cursor:pointer;box-shadow:0 0 6px rgba(108,92,231,.5)}
 </style>
 </head>
 <body>
-
 <div class="toast" id="toast"></div>
-
 <div class="app">
-
-<!-- ==================== 页面 ==================== -->
 <div class="pages">
 
 <!-- 仪表盘 -->
 <div class="page active" id="page-dash">
   <div class="row-between" style="margin-bottom:12px">
     <div style="font-size:20px;font-weight:700">QuantFlow</div>
-    <div class="row" style="gap:12px">
-      <span style="cursor:pointer;font-size:20px" onclick="toast('暂无新通知')">🔔</span>
-      <span style="cursor:pointer;font-size:20px" id="btn-settings">⚙️</span>
+    <div class="row" style="gap:4px">
+      <div class="header-action" id="btn-notify" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px">🔔</div>
+      <div class="header-action" id="btn-settings" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px">⚙️</div>
     </div>
   </div>
-
   <div class="card">
     <div class="row-between">
       <div><div class="text-sm text-dim">总资产</div><div style="font-size:28px;font-weight:700;margin-top:4px">$10,000.00</div></div>
@@ -141,15 +119,12 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
       <div class="text-center"><div class="text-xs text-dim">交易</div><div>24</div></div>
     </div>
   </div>
-
   <div class="card">
     <div class="row-between"><span class="bold">收益曲线</span><span class="text-dim text-sm">$12,456</span></div>
     <canvas id="chart-equity" style="width:100%;height:160px;margin-top:12px"></canvas>
   </div>
-
   <div class="bold" style="margin-bottom:8px;font-size:16px">策略状态</div>
   <div id="dash-strategies"></div>
-
   <div class="bold" style="margin-top:16px;margin-bottom:8px;font-size:16px">最近交易</div>
   <div id="dash-trades"></div>
 </div>
@@ -180,10 +155,11 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
     <div class="chat-header">
       <div class="row-between">
         <div class="row" style="gap:8px">
+          <div id="btn-ai-back" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px">←</div>
           <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;font-size:16px">🤖</div>
           <div><div class="bold">AI 助手</div><div class="text-xs text-dim">智能分析 · 策略优化</div></div>
         </div>
-        <span style="cursor:pointer;font-size:18px" onclick="clearChat()">🗑️</span>
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px" onclick="clearChat()">🗑️</div>
       </div>
     </div>
     <div class="chat-chips">
@@ -197,7 +173,7 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
     </div>
     <div class="chat-input">
       <input id="chat-input" placeholder="输入消息..." enterkeyhint="send">
-      <button class="send-btn" onclick="sendMsg()">➤</button>
+      <button class="send-btn" id="btn-send">➤</button>
     </div>
   </div>
 </div>
@@ -212,167 +188,73 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
     <div class="card text-center"><div class="text-xs text-dim">胜率</div><div class="text-g bold" style="font-size:20px;margin-top:4px">58.3%</div></div>
     <div class="card text-center"><div class="text-xs text-dim">夏普比率</div><div class="bold" style="font-size:20px;margin-top:4px">1.85</div></div>
   </div>
-  <div class="card" style="margin-top:12px">
-    <div class="bold" style="margin-bottom:8px">月度收益</div>
-    <div class="hbar" id="monthly-chart"></div>
-  </div>
-  <div class="card" style="margin-top:12px">
-    <div class="bold" style="margin-bottom:8px">策略对比</div>
-    <div id="strategy-compare"></div>
-  </div>
+  <div class="card" style="margin-top:12px"><div class="bold" style="margin-bottom:8px">月度收益</div><div class="hbar" id="monthly-chart"></div></div>
+  <div class="card" style="margin-top:12px"><div class="bold" style="margin-bottom:8px">策略对比</div><div id="strategy-compare"></div></div>
 </div>
 
 <!-- 设置 -->
 <div class="page" id="page-settings">
-  <div class="row-between" style="margin-bottom:12px;position:sticky;top:0;background:var(--bg);z-index:10;padding:4px 0">
+  <div class="row-between" style="margin-bottom:12px;position:sticky;top:0;background:var(--bg);z-index:10;padding:8px 0">
     <div style="font-size:20px;font-weight:700">设置</div>
-    <span style="cursor:pointer;font-size:22px;color:var(--d)" onclick="goBack()">✕</span>
+    <div id="btn-settings-close" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:var(--d)">✕</div>
   </div>
+  <div class="card"><div class="row" style="gap:12px"><div class="avatar">Q</div><div style="flex:1"><div class="bold" style="font-size:16px" id="disp-name">用户</div><div class="text-sm text-dim" id="disp-email">user@quantflow.app</div></div><div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="showModal('modal-email')">✏️</div></div></div>
 
-  <!-- 账户 -->
-  <div class="card">
-    <div class="row" style="gap:12px">
-      <div class="avatar">Q</div>
-      <div style="flex:1"><div class="bold" style="font-size:16px">用户</div><div class="text-sm text-dim">user@quantflow.app</div></div>
-      <span style="cursor:pointer" onclick="showModal('modal-email')">✏️</span>
-    </div>
-  </div>
-
-  <!-- 交易所 -->
   <div class="section-title">交易所配置</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="showModal('modal-exchange')">
-      <div class="setting-icon" style="background:var(--p)">🏦</div>
-      <div class="setting-info"><div class="title">当前交易所</div></div>
-      <div class="setting-right"><span id="set-exchange" class="text-a">Binance</span> ›</div>
-    </div>
-    <div class="setting-item" onclick="showModal('modal-apikey')">
-      <div class="setting-icon" style="background:var(--w)">🔑</div>
-      <div class="setting-info"><div class="title">API Key 管理</div><div class="sub" id="apikey-status">未配置</div></div>
-      <div class="setting-right">›</div>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-testnet')">
-      <div class="setting-icon" style="background:var(--r)">🔄</div>
-      <div class="setting-info"><div class="title">测试网</div><div class="sub">使用测试网络</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-testnet" onchange="toast(this.checked?'已切换到测试网':'已切换到主网')"><span class="slider"></span></label>
-    </div>
+    <div class="setting-item" onclick="showModal('modal-exchange')"><div class="setting-icon" style="background:var(--p)">🏦</div><div class="setting-info"><div class="title">当前交易所</div></div><div class="setting-right"><span id="set-exchange" class="text-a">Binance</span> ›</div></div>
+    <div class="setting-item" onclick="showModal('modal-apikey')"><div class="setting-icon" style="background:var(--w)">🔑</div><div class="setting-info"><div class="title">API Key 管理</div><div class="sub" id="apikey-status">未配置</div></div><div class="setting-right">›</div></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-testnet')"><div class="setting-icon" style="background:var(--r)">🔄</div><div class="setting-info"><div class="title">测试网</div><div class="sub">使用测试网络</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-testnet" onchange="toast(this.checked?'已切换到测试网':'已切换到主网')"><span class="slider"></span></label></div>
   </div>
 
-  <!-- AI 设置 -->
   <div class="section-title">AI 设置</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="showModal('modal-model')">
-      <div class="setting-icon" style="background:var(--a)">🤖</div>
-      <div class="setting-info"><div class="title">AI 模型</div></div>
-      <div class="setting-right"><span id="set-model" class="text-a">DeepSeek</span> ›</div>
-    </div>
-    <div class="setting-item" onclick="showModal('modal-aiurl')">
-      <div class="setting-icon" style="background:var(--p)">🔗</div>
-      <div class="setting-info"><div class="title">AI 引擎地址</div><div class="sub" id="set-aiurl">http://localhost:8000</div></div>
-      <div class="setting-right">›</div>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-ai-analysis')">
-      <div class="setting-icon" style="background:var(--g)">📊</div>
-      <div class="setting-info"><div class="title">AI 市场分析</div><div class="sub">自动分析新闻和市场情绪</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-analysis" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-ai-evolve')">
-      <div class="setting-icon" style="background:var(--w)">🧠</div>
-      <div class="setting-info"><div class="title">策略自进化</div><div class="sub">AI 自动优化策略参数</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-evolve" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-ai-risk')">
-      <div class="setting-icon" style="background:var(--r)">🛡️</div>
-      <div class="setting-info"><div class="title">AI 风险预警</div><div class="sub">高风险时自动暂停策略</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-risk" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
+    <div class="setting-item" onclick="showModal('modal-model')"><div class="setting-icon" style="background:var(--a)">🤖</div><div class="setting-info"><div class="title">AI 模型</div></div><div class="setting-right"><span id="set-model" class="text-a">DeepSeek</span> ›</div></div>
+    <div class="setting-item" onclick="showModal('modal-aiurl')"><div class="setting-icon" style="background:var(--p)">🔗</div><div class="setting-info"><div class="title">AI 引擎地址</div><div class="sub" id="set-aiurl">http://localhost:8000</div></div><div class="setting-right">›</div></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-ai-analysis')"><div class="setting-icon" style="background:var(--g)">📊</div><div class="setting-info"><div class="title">AI 市场分析</div><div class="sub">自动分析新闻和市场情绪</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-analysis" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-ai-evolve')"><div class="setting-icon" style="background:var(--w)">🧠</div><div class="setting-info"><div class="title">策略自进化</div><div class="sub">AI 自动优化策略参数</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-evolve" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-ai-risk')"><div class="setting-icon" style="background:var(--r)">🛡️</div><div class="setting-info"><div class="title">AI 风险预警</div><div class="sub">高风险时自动暂停策略</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-ai-risk" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
   </div>
 
-  <!-- 交易偏好 -->
   <div class="section-title">交易偏好</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="showModal('modal-dd')">
-      <div class="setting-icon" style="background:var(--r)">📉</div>
-      <div class="setting-info"><div class="title">最大回撤阈值</div><div class="sub">超过此值自动暂停</div></div>
-      <div class="setting-right text-r bold" id="set-dd">15%</div>
-    </div>
-    <div class="setting-item" onclick="showModal('modal-pos')">
-      <div class="setting-icon" style="background:var(--a)">🥧</div>
-      <div class="setting-info"><div class="title">单笔最大仓位</div><div class="sub">单笔交易最大占比</div></div>
-      <div class="setting-right text-a bold" id="set-pos">20%</div>
-    </div>
-    <div class="setting-item" onclick="showModal('modal-lev')">
-      <div class="setting-icon" style="background:var(--p)">⚡</div>
-      <div class="setting-info"><div class="title">默认杠杆</div></div>
-      <div class="setting-right bold" id="set-lev">10x ›</div>
-    </div>
+    <div class="setting-item" onclick="showModal('modal-dd')"><div class="setting-icon" style="background:var(--r)">📉</div><div class="setting-info"><div class="title">最大回撤阈值</div><div class="sub">超过此值自动暂停</div></div><div class="setting-right text-r bold" id="set-dd">15%</div></div>
+    <div class="setting-item" onclick="showModal('modal-pos')"><div class="setting-icon" style="background:var(--a)">🥧</div><div class="setting-info"><div class="title">单笔最大仓位</div><div class="sub">单笔交易最大占比</div></div><div class="setting-right text-a bold" id="set-pos">20%</div></div>
+    <div class="setting-item" onclick="showModal('modal-lev')"><div class="setting-icon" style="background:var(--p)">⚡</div><div class="setting-info"><div class="title">默认杠杆</div></div><div class="setting-right bold" id="set-lev">10x ›</div></div>
   </div>
 
-  <!-- 通知 -->
   <div class="section-title">通知</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="toggleSwitch('switch-notify-trade')">
-      <div class="setting-icon" style="background:var(--p)">🔔</div>
-      <div class="setting-info"><div class="title">交易通知</div><div class="sub">开仓/平仓/止损触发</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-trade" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-notify-risk')">
-      <div class="setting-icon" style="background:var(--r)">⚠️</div>
-      <div class="setting-info"><div class="title">风险告警</div><div class="sub">异常波动和风险预警</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-risk" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="toggleSwitch('switch-notify-daily')">
-      <div class="setting-icon" style="background:var(--w)">📋</div>
-      <div class="setting-info"><div class="title">每日报告</div><div class="sub">每日收益汇总</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-daily" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
+    <div class="setting-item" onclick="toggleSwitch('switch-notify-trade')"><div class="setting-icon" style="background:var(--p)">🔔</div><div class="setting-info"><div class="title">交易通知</div><div class="sub">开仓/平仓/止损触发</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-trade" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-notify-risk')"><div class="setting-icon" style="background:var(--r)">⚠️</div><div class="setting-info"><div class="title">风险告警</div><div class="sub">异常波动和风险预警</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-risk" checked onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="toggleSwitch('switch-notify-daily')"><div class="setting-icon" style="background:var(--w)">📋</div><div class="setting-info"><div class="title">每日报告</div><div class="sub">每日收益汇总</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-notify-daily" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
   </div>
 
-  <!-- 外观 -->
   <div class="section-title">外观</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="toggleSwitch('switch-dark')">
-      <div class="setting-icon" style="background:var(--c)">🌙</div>
-      <div class="setting-info"><div class="title">深色模式</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-dark" checked onchange="toast(this.checked?'深色模式':'浅色模式')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="toast('语言设置')">
-      <div class="setting-icon" style="background:var(--a)">🌐</div>
-      <div class="setting-info"><div class="title">语言</div></div>
-      <div class="setting-right">中文 ›</div>
-    </div>
+    <div class="setting-item" onclick="toggleSwitch('switch-dark')"><div class="setting-icon" style="background:var(--c)">🌙</div><div class="setting-info"><div class="title">深色模式</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-dark" checked onchange="toggleDarkMode(this.checked)"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="showModal('modal-lang')"><div class="setting-icon" style="background:var(--a)">🌐</div><div class="setting-info"><div class="title">语言</div></div><div class="setting-right"><span id="set-lang">中文</span> ›</div></div>
   </div>
 
-  <!-- 安全 -->
   <div class="section-title">安全</div>
   <div class="card" style="padding:0">
-    <div class="setting-item" onclick="toggleSwitch('switch-bio')">
-      <div class="setting-icon" style="background:var(--g)">👆</div>
-      <div class="setting-info"><div class="title">生物识别</div><div class="sub">指纹/Face ID 登录</div></div>
-      <label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-bio" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label>
-    </div>
-    <div class="setting-item" onclick="showModal('modal-pwd')">
-      <div class="setting-icon" style="background:var(--p)">🔒</div>
-      <div class="setting-info"><div class="title">修改密码</div></div>
-      <div class="setting-right">›</div>
-    </div>
+    <div class="setting-item" onclick="toggleSwitch('switch-bio')"><div class="setting-icon" style="background:var(--g)">👆</div><div class="setting-info"><div class="title">生物识别</div><div class="sub">指纹/Face ID 登录</div></div><label class="switch" onclick="event.stopPropagation()"><input type="checkbox" id="switch-bio" onchange="toast(this.checked?'已开启':'已关闭')"><span class="slider"></span></label></div>
+    <div class="setting-item" onclick="showModal('modal-pwd')"><div class="setting-icon" style="background:var(--p)">🔒</div><div class="setting-info"><div class="title">修改密码</div></div><div class="setting-right">›</div></div>
   </div>
 
-  <!-- 关于 -->
   <div class="section-title">关于</div>
   <div class="card" style="padding:0">
-    <div class="setting-item"><div class="setting-icon" style="background:var(--c)">ℹ️</div><div class="setting-info"><div class="title">版本</div></div><div class="setting-right text-dim">v1.3.0</div></div>
-    <div class="setting-item" onclick="toast('用户协议')"><div class="setting-icon" style="background:var(--a)">📄</div><div class="setting-info"><div class="title">用户协议</div></div><div class="setting-right">›</div></div>
-    <div class="setting-item" onclick="toast('隐私政策')"><div class="setting-icon" style="background:var(--p)">🔐</div><div class="setting-info"><div class="title">隐私政策</div></div><div class="setting-right">›</div></div>
+    <div class="setting-item"><div class="setting-icon" style="background:var(--c)">ℹ️</div><div class="setting-info"><div class="title">版本</div></div><div class="setting-right text-dim">v2.0.0</div></div>
+    <div class="setting-item" onclick="showModal('modal-terms')"><div class="setting-icon" style="background:var(--a)">📄</div><div class="setting-info"><div class="title">用户协议</div></div><div class="setting-right">›</div></div>
+    <div class="setting-item" onclick="showModal('modal-privacy')"><div class="setting-icon" style="background:var(--p)">🔐</div><div class="setting-info"><div class="title">隐私政策</div></div><div class="setting-right">›</div></div>
   </div>
 
-  <button class="btn btn-r btn-full" style="margin-top:16px" onclick="if(confirm('确定退出登录?'))toast('已退出登录')">退出登录</button>
+  <button class="btn btn-r btn-full" style="margin-top:16px" onclick="showModal('modal-logout')">退出登录</button>
   <div style="height:80px"></div>
 </div>
 
-</div><!-- /pages -->
+</div>
 
-<!-- ==================== 底部导航 ==================== -->
 <div class="nav" id="main-nav">
   <div class="nav-item active" data-page="dash"><div class="icon">📊</div>仪表盘</div>
   <div class="nav-item" data-page="strategy"><div class="icon">💻</div>策略</div>
@@ -380,464 +262,170 @@ label{font-size:12px;color:var(--d);margin-bottom:4px;display:block}
   <div class="nav-item" data-page="ai"><div class="icon">🤖</div>AI</div>
   <div class="nav-item" data-page="analytics"><div class="icon">📋</div>分析</div>
 </div>
+</div>
 
-</div><!-- /app -->
-
-<!-- ==================== 弹窗 ==================== -->
-
-<div class="modal" id="modal-exchange"><div class="modal-box">
-  <div class="modal-head"><h3>选择交易所</h3><button class="close-btn" onclick="hideModal('modal-exchange')">✕</button></div>
-  <div id="exchange-list"></div>
-</div></div>
-
-<div class="modal modal-center" id="modal-apikey"><div class="modal-box">
-  <div class="modal-head"><h3>配置 API Key</h3><button class="close-btn" onclick="hideModal('modal-apikey')">✕</button></div>
-  <div class="form-group"><label>交易所</label><input id="inp-exchange" value="Binance" readonly></div>
-  <div class="form-group"><label>API Key</label><input id="inp-apikey" placeholder="输入 API Key"></div>
-  <div class="form-group"><label>Secret Key</label><input id="inp-secret" type="password" placeholder="输入 Secret Key"></div>
-  <div class="text-xs text-w" style="margin-bottom:12px">⚠️ 请勿开启提币权限</div>
-  <button class="btn btn-p btn-full" onclick="saveApiKey()">保存</button>
-</div></div>
-
-<div class="modal" id="modal-model"><div class="modal-box">
-  <div class="modal-head"><h3>选择 AI 模型</h3><button class="close-btn" onclick="hideModal('modal-model')">✕</button></div>
-  <div id="model-list"></div>
-</div></div>
-
-<div class="modal modal-center" id="modal-aiurl"><div class="modal-box">
-  <div class="modal-head"><h3>AI 引擎地址</h3><button class="close-btn" onclick="hideModal('modal-aiurl')">✕</button></div>
-  <div class="form-group"><label>地址</label><input id="inp-aiurl" value="http://localhost:8000" placeholder="http://your-server:8000"></div>
-  <button class="btn btn-p btn-full" onclick="saveAiUrl()">保存</button>
-</div></div>
-
-<div class="modal modal-center" id="modal-dd"><div class="modal-box">
-  <div class="modal-head"><h3>最大回撤阈值</h3><button class="close-btn" onclick="hideModal('modal-dd')">✕</button></div>
-  <div class="text-center bold" style="font-size:32px;color:var(--r)" id="dd-val">15%</div>
-  <input type="range" min="5" max="50" value="15" style="width:100%;margin:16px 0" oninput="document.getElementById('dd-val').textContent=this.value+'%'">
-  <button class="btn btn-p btn-full" onclick="document.getElementById('set-dd').textContent=document.getElementById('dd-val').textContent;hideModal('modal-dd');toast('✅ 已保存')">确认</button>
-</div></div>
-
-<div class="modal modal-center" id="modal-pos"><div class="modal-box">
-  <div class="modal-head"><h3>单笔最大仓位</h3><button class="close-btn" onclick="hideModal('modal-pos')">✕</button></div>
-  <div class="text-center bold" style="font-size:32px;color:var(--a)" id="pos-val">20%</div>
-  <input type="range" min="5" max="100" value="20" style="width:100%;margin:16px 0" oninput="document.getElementById('pos-val').textContent=this.value+'%'">
-  <button class="btn btn-p btn-full" onclick="document.getElementById('set-pos').textContent=document.getElementById('pos-val').textContent;hideModal('modal-pos');toast('✅ 已保存')">确认</button>
-</div></div>
-
-<div class="modal" id="modal-lev"><div class="modal-box">
-  <div class="modal-head"><h3>选择杠杆</h3><button class="close-btn" onclick="hideModal('modal-lev')">✕</button></div>
-  <div id="lev-list"></div>
-</div></div>
-
-<div class="modal modal-center" id="modal-email"><div class="modal-box">
-  <div class="modal-head"><h3>编辑邮箱</h3><button class="close-btn" onclick="hideModal('modal-email')">✕</button></div>
-  <div class="form-group"><label>邮箱</label><input id="inp-email" value="user@quantflow.app"></div>
-  <button class="btn btn-p btn-full" onclick="hideModal('modal-email');toast('✅ 邮箱已更新')">保存</button>
-</div></div>
-
-<div class="modal modal-center" id="modal-pwd"><div class="modal-box">
-  <div class="modal-head"><h3>修改密码</h3><button class="close-btn" onclick="hideModal('modal-pwd')">✕</button></div>
-  <div class="form-group"><label>新密码</label><input type="password" placeholder="输入新密码"></div>
-  <div class="form-group"><label>确认密码</label><input type="password" placeholder="再次输入"></div>
-  <button class="btn btn-p btn-full" onclick="hideModal('modal-pwd');toast('✅ 密码已修改')">确认</button>
-</div></div>
-
-<div class="modal" id="modal-create"><div class="modal-box">
-  <div class="modal-head"><h3>🎯 AI 策略生成</h3><button class="close-btn" onclick="hideModal('modal-create')">✕</button></div>
-  <div class="text-sm text-dim" style="margin-bottom:12px">用自然语言描述你的交易想法</div>
-  <div class="form-group"><textarea id="inp-strategy" rows="4" placeholder="例如: 当 RSI 低于 30 且成交量放大时买入"></textarea></div>
-  <div class="row" style="gap:8px">
-    <button class="btn btn-o" style="flex:1" onclick="hideModal('modal-create');toast('📊 回测完成')">回测</button>
-    <button class="btn btn-p" style="flex:1" onclick="createStrategy()">生成策略</button>
-  </div>
-</div></div>
-
-<div class="modal modal-center" id="modal-close"><div class="modal-box">
-  <div class="modal-head"><h3>确认平仓</h3><button class="close-btn" onclick="hideModal('modal-close')">✕</button></div>
-  <div class="text-center">
-    <div class="bold" style="font-size:18px" id="close-sym"></div>
-    <div style="margin-top:8px" id="close-info"></div>
-  </div>
-  <div class="row" style="gap:8px;margin-top:16px">
-    <button class="btn btn-o" style="flex:1" onclick="hideModal('modal-close')">取消</button>
-    <button class="btn btn-r" style="flex:1" onclick="confirmClose()">确认平仓</button>
-  </div>
-</div></div>
-
-<div class="modal modal-center" id="modal-sl"><div class="modal-box">
-  <div class="modal-head"><h3>修改止损</h3><button class="close-btn" onclick="hideModal('modal-sl')">✕</button></div>
-  <div class="text-sm text-dim" style="margin-bottom:12px" id="sl-sym"></div>
-  <div class="form-group"><label>新止损价格</label><input id="inp-sl" type="number" placeholder="输入止损价格"></div>
-  <button class="btn btn-p btn-full" onclick="saveSL()">确认</button>
-</div></div>
-
-<div class="modal modal-center" id="modal-tp"><div class="modal-box">
-  <div class="modal-head"><h3>修改止盈</h3><button class="close-btn" onclick="hideModal('modal-tp')">✕</button></div>
-  <div class="text-sm text-dim" style="margin-bottom:12px" id="tp-sym"></div>
-  <div class="form-group"><label>新止盈价格</label><input id="inp-tp" type="number" placeholder="输入止盈价格"></div>
-  <button class="btn btn-p btn-full" onclick="saveTP()">确认</button>
-</div></div>
+<!-- 弹窗 -->
+<div class="modal" id="modal-exchange"><div class="modal-box"><div class="modal-head"><h3>选择交易所</h3><button class="close-btn" onclick="hideModal('modal-exchange')">✕</button></div><div id="exchange-list"></div></div></div>
+<div class="modal modal-center" id="modal-apikey"><div class="modal-box"><div class="modal-head"><h3>配置 API Key</h3><button class="close-btn" onclick="hideModal('modal-apikey')">✕</button></div><div class="form-group"><label>交易所</label><input id="inp-exchange" value="Binance" readonly></div><div class="form-group"><label>API Key</label><input id="inp-apikey" placeholder="输入 API Key"></div><div class="form-group"><label>Secret Key</label><input id="inp-secret" type="password" placeholder="输入 Secret Key"></div><div class="text-xs text-w" style="margin-bottom:12px">⚠️ 请勿开启提币权限</div><button class="btn btn-p btn-full" onclick="saveApiKey()">保存</button></div></div>
+<div class="modal" id="modal-model"><div class="modal-box"><div class="modal-head"><h3>选择 AI 模型</h3><button class="close-btn" onclick="hideModal('modal-model')">✕</button></div><div id="model-list"></div></div></div>
+<div class="modal modal-center" id="modal-aiurl"><div class="modal-box"><div class="modal-head"><h3>AI 引擎地址</h3><button class="close-btn" onclick="hideModal('modal-aiurl')">✕</button></div><div class="form-group"><label>地址</label><input id="inp-aiurl" value="http://localhost:8000" placeholder="http://your-server:8000"></div><button class="btn btn-p btn-full" onclick="saveAiUrl()">保存</button></div></div>
+<div class="modal modal-center" id="modal-dd"><div class="modal-box"><div class="modal-head"><h3>最大回撤阈值</h3><button class="close-btn" onclick="hideModal('modal-dd')">✕</button></div><div class="text-center bold" style="font-size:32px;color:var(--r)" id="dd-val">15%</div><input type="range" min="5" max="50" value="15" style="width:100%;margin:16px 0" oninput="document.getElementById('dd-val').textContent=this.value+'%'"><button class="btn btn-p btn-full" onclick="document.getElementById('set-dd').textContent=document.getElementById('dd-val').textContent;hideModal('modal-dd');saveSetting('dd',document.getElementById('dd-val').textContent);toast('✅ 已保存')">确认</button></div></div>
+<div class="modal modal-center" id="modal-pos"><div class="modal-box"><div class="modal-head"><h3>单笔最大仓位</h3><button class="close-btn" onclick="hideModal('modal-pos')">✕</button></div><div class="text-center bold" style="font-size:32px;color:var(--a)" id="pos-val">20%</div><input type="range" min="5" max="100" value="20" style="width:100%;margin:16px 0" oninput="document.getElementById('pos-val').textContent=this.value+'%'"><button class="btn btn-p btn-full" onclick="document.getElementById('set-pos').textContent=document.getElementById('pos-val').textContent;hideModal('modal-pos');saveSetting('pos',document.getElementById('pos-val').textContent);toast('✅ 已保存')">确认</button></div></div>
+<div class="modal" id="modal-lev"><div class="modal-box"><div class="modal-head"><h3>选择杠杆</h3><button class="close-btn" onclick="hideModal('modal-lev')">✕</button></div><div id="lev-list"></div></div></div>
+<div class="modal modal-center" id="modal-email"><div class="modal-box"><div class="modal-head"><h3>编辑邮箱</h3><button class="close-btn" onclick="hideModal('modal-email')">✕</button></div><div class="form-group"><label>邮箱</label><input id="inp-email" value="user@quantflow.app"></div><button class="btn btn-p btn-full" onclick="saveEmail()">保存</button></div></div>
+<div class="modal modal-center" id="modal-pwd"><div class="modal-box"><div class="modal-head"><h3>修改密码</h3><button class="close-btn" onclick="hideModal('modal-pwd')">✕</button></div><div class="form-group"><label>新密码</label><input type="password" id="inp-pwd1" placeholder="至少6位"></div><div class="form-group"><label>确认密码</label><input type="password" id="inp-pwd2" placeholder="再次输入"></div><button class="btn btn-p btn-full" onclick="savePwd()">确认</button></div></div>
+<div class="modal" id="modal-create"><div class="modal-box"><div class="modal-head"><h3>🎯 AI 策略生成</h3><button class="close-btn" onclick="hideModal('modal-create')">✕</button></div><div class="text-sm text-dim" style="margin-bottom:12px">用自然语言描述你的交易想法</div><div class="form-group"><textarea id="inp-strategy" rows="4" placeholder="例如: 当 RSI 低于 30 且成交量放大时买入"></textarea></div><div class="row" style="gap:8px"><button class="btn btn-o" style="flex:1" onclick="runBacktest()">📊 回测</button><button class="btn btn-p" style="flex:1" onclick="createStrategy()">生成策略</button></div></div></div>
+<div class="modal modal-center" id="modal-close"><div class="modal-box"><div class="modal-head"><h3>确认平仓</h3><button class="close-btn" onclick="hideModal('modal-close')">✕</button></div><div class="text-center"><div class="bold" style="font-size:18px" id="close-sym"></div><div style="margin-top:8px" id="close-info"></div></div><div class="row" style="gap:8px;margin-top:16px"><button class="btn btn-o" style="flex:1" onclick="hideModal('modal-close')">取消</button><button class="btn btn-r" style="flex:1" onclick="confirmClose()">确认平仓</button></div></div></div>
+<div class="modal modal-center" id="modal-sl"><div class="modal-box"><div class="modal-head"><h3>修改止损</h3><button class="close-btn" onclick="hideModal('modal-sl')">✕</button></div><div class="text-sm text-dim" style="margin-bottom:12px" id="sl-sym"></div><div class="form-group"><label>新止损价格</label><input id="inp-sl" type="number" placeholder="输入止损价格"></div><button class="btn btn-p btn-full" onclick="saveSL()">确认</button></div></div>
+<div class="modal modal-center" id="modal-tp"><div class="modal-box"><div class="modal-head"><h3>修改止盈</h3><button class="close-btn" onclick="hideModal('modal-tp')">✕</button></div><div class="text-sm text-dim" style="margin-bottom:12px" id="tp-sym"></div><div class="form-group"><label>新止盈价格</label><input id="inp-tp" type="number" placeholder="输入止盈价格"></div><button class="btn btn-p btn-full" onclick="saveTP()">确认</button></div></div>
+<div class="modal" id="modal-lang"><div class="modal-box"><div class="modal-head"><h3>选择语言</h3><button class="close-btn" onclick="hideModal('modal-lang')">✕</button></div><div id="lang-list"></div></div></div>
+<div class="modal" id="modal-terms"><div class="modal-box"><div class="modal-head"><h3>用户协议</h3><button class="close-btn" onclick="hideModal('modal-terms')">✕</button></div><div style="font-size:14px;line-height:1.8;color:var(--d)">欢迎使用 QuantFlow。本应用仅供学习和研究目的。量化交易存在风险，过往收益不代表未来表现。用户应自行承担所有交易风险。本应用不提供任何投资建议。</div></div></div>
+<div class="modal" id="modal-privacy"><div class="modal-box"><div class="modal-head"><h3>隐私政策</h3><button class="close-btn" onclick="hideModal('modal-privacy')">✕</button></div><div style="font-size:14px;line-height:1.8;color:var(--d)">我们重视您的隐私。您的 API Key 仅存储在本地设备上，不会上传到任何服务器。交易数据仅用于本地展示和分析。</div></div></div>
+<div class="modal modal-center" id="modal-logout"><div class="modal-box"><div class="modal-head"><h3>确认退出</h3><button class="close-btn" onclick="hideModal('modal-logout')">✕</button></div><div class="text-center text-dim">确定要退出登录吗？</div><div class="row" style="gap:8px;margin-top:16px"><button class="btn btn-o" style="flex:1" onclick="hideModal('modal-logout')">取消</button><button class="btn btn-r" style="flex:1" onclick="hideModal('modal-logout');toast('已退出登录')">确认退出</button></div></div></div>
+<div class="modal modal-center" id="modal-backtest"><div class="modal-box"><div class="modal-head"><h3>📊 回测结果</h3><button class="close-btn" onclick="hideModal('modal-backtest')">✕</button></div><div id="backtest-result"></div></div></div>
+<div class="modal" id="modal-strategy-detail"><div class="modal-box"><div class="modal-head"><h3 id="detail-name">策略详情</h3><button class="close-btn" onclick="hideModal('modal-strategy-detail')">✕</button></div><div id="detail-content"></div></div></div>
+<div class="modal modal-center" id="modal-notify"><div class="modal-box"><div class="modal-head"><h3>通知</h3><button class="close-btn" onclick="hideModal('modal-notify')">✕</button></div><div id="notify-list"><div class="setting-item"><div class="setting-icon" style="background:var(--g)">✅</div><div class="setting-info"><div class="title">均线策略触发买入</div><div class="sub">BTCUSDT $62,450 · 10分钟前</div></div></div><div class="setting-item"><div class="setting-icon" style="background:var(--r)">⚠️</div><div class="setting-info"><div class="title">BTC 跌破支撑位</div><div class="sub">$61,000 · 30分钟前</div></div></div><div class="setting-item"><div class="setting-icon" style="background:var(--a)">📊</div><div class="setting-info"><div class="title">AI 分析完成</div><div class="sub">BTC 短期看空 · 1小时前</div></div></div></div></div></div>
 
 <script>
-// ==================== 数据 ====================
-var positions=[
-  {sym:'BTCUSDT',side:'LONG',entry:62450,cur:63100,pnl:1.04,sl:61000,tp:65000,lots:0.1},
-  {sym:'ETHUSDT',side:'SHORT',entry:3150,cur:3120,pnl:0.95,sl:3300,tp:3000,lots:1.0}
-];
-var strategies=[
-  {name:'均线交叉策略',info:'BTCUSDT · 1h · MA(5/20)',status:'running',ai:true,pnl:12.5,wr:58,dd:4.2},
-  {name:'RSI 反转策略',info:'ETHUSDT · 4h · RSI(14)',status:'paused',ai:false,pnl:8.3,wr:52,dd:5.1}
-];
+var positions=[{sym:'BTCUSDT',side:'LONG',entry:62450,cur:63100,pnl:1.04,sl:61000,tp:65000,lots:0.1},{sym:'ETHUSDT',side:'SHORT',entry:3150,cur:3120,pnl:0.95,sl:3300,tp:3000,lots:1.0}];
+var strategies=[{name:'均线交叉策略',info:'BTCUSDT · 1h · MA(5/20)',status:'running',ai:true,pnl:12.5,wr:58,dd:4.2},{name:'RSI 反转策略',info:'ETHUSDT · 4h · RSI(14)',status:'paused',ai:false,pnl:8.3,wr:52,dd:5.1}];
+var historyTrades=[{sym:'BTCUSDT',side:'BUY',p:61200,pnl:3.2,ok:true,time:'07-28 14:30'},{sym:'ETHUSDT',side:'SELL',p:3200,pnl:-1.5,ok:false,time:'07-29 09:15'},{sym:'BTCUSDT',side:'BUY',p:60800,pnl:5.1,ok:true,time:'07-30 16:45'}];
 var closeIdx=-1,modifyIdx=-1,lastPage='dash';
 
-// ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded',function(){
-  // 底部导航
   document.querySelectorAll('.nav-item').forEach(function(item){
-    item.addEventListener('click',function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      var page=this.getAttribute('data-page');
-      if(page)showPage(page);
-    });
+    item.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var p=this.getAttribute('data-page');if(p)showPage(p);});
   });
-
-  // 设置按钮
-  var btnSettings=document.getElementById('btn-settings');
-  if(btnSettings){
-    btnSettings.addEventListener('click',function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      showPage('settings');
-    });
-  }
-
-  // AI 输入回车
-  var chatInput=document.getElementById('chat-input');
-  if(chatInput){
-    chatInput.addEventListener('keydown',function(e){
-      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}
-    });
-  }
-
-  // 初始化
-  renderDash();renderStrategy();renderTrading();renderAnalytics();renderSettings();
-  drawChart();
-  window.addEventListener('resize',drawChart);
+  document.getElementById('btn-settings').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();showPage('settings');});
+  document.getElementById('btn-notify').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();showModal('modal-notify');});
+  document.getElementById('btn-settings-close').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();goBack();});
+  document.getElementById('btn-ai-back').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();goBack();});
+  document.getElementById('btn-send').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();sendMsg();});
+  document.getElementById('chat-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+  loadSettings();renderDash();renderStrategy();renderTrading();renderAnalytics();renderSettings();drawChart();
+  window.addEventListener('resize',debounce(drawChart,200));
 });
 
-// ==================== 页面切换 ====================
+function debounce(fn,ms){var t;return function(){clearTimeout(t);t=setTimeout(fn,ms)}}
+
 function showPage(id){
-  // 记录上一页
-  var activePage=document.querySelector('.page.active');
-  if(activePage&&activePage.id!=='page-'+id)lastPage=activePage.id.replace('page-','');
-  
-  // 切换页面
+  var active=document.querySelector('.page.active');
+  if(active&&active.id!=='page-'+id)lastPage=active.id.replace('page-','');
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  var target=document.getElementById('page-'+id);
-  if(target){
-    target.classList.add('active');
-    target.scrollTop=0;
-  }
-  
-  // 更新导航
+  var t=document.getElementById('page-'+id);
+  if(t){t.classList.add('active');t.scrollTop=0;}
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-  if(id!=='settings'){
-    var navItem=document.querySelector('.nav-item[data-page="'+id+'"]');
-    if(navItem)navItem.classList.add('active');
-  }
-  
-  // 显示/隐藏导航栏
+  if(id!=='settings'){var ni=document.querySelector('.nav-item[data-page="'+id+'"]');if(ni)ni.classList.add('active');}
   var nav=document.getElementById('main-nav');
-  if(nav)nav.style.display=id==='ai'?'none':'flex';
+  nav.style.display=(id==='ai')?'none':'flex';
 }
-
-function goBack(){
-  showPage(lastPage||'dash');
-}
-
-// ==================== Tab 切换 ====================
+function goBack(){showPage(lastPage||'dash');}
 function switchTab(tab){
   document.getElementById('tab-pos').style.display=tab==='pos'?'block':'none';
   document.getElementById('tab-hist').style.display=tab==='hist'?'block':'none';
   document.getElementById('tab-chip-pos').classList.toggle('active',tab==='pos');
   document.getElementById('tab-chip-hist').classList.toggle('active',tab==='hist');
 }
+function showModal(id){var m=document.getElementById(id);if(m){m.classList.add('active');m.onclick=function(e){if(e.target===m)hideModal(id)};}}
+function hideModal(id){var m=document.getElementById(id);if(m)m.classList.remove('active');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},2000);}
+function toggleSwitch(id){var s=document.getElementById(id);if(s){s.checked=!s.checked;s.dispatchEvent(new Event('change'));}}
 
-// ==================== 弹窗 ====================
-function showModal(id){
-  var modal=document.getElementById(id);
-  if(modal){
-    modal.classList.add('active');
-    modal.addEventListener('click',function(e){
-      if(e.target===modal)hideModal(id);
-    },{once:true});
-  }
-}
-function hideModal(id){
-  var modal=document.getElementById(id);
-  if(modal)modal.classList.remove('active');
+// 深色模式切换
+function toggleDarkMode(dark){
+  if(!dark){document.documentElement.style.setProperty('--bg','#f5f5f5');document.documentElement.style.setProperty('--s','#ffffff');document.documentElement.style.setProperty('--c','#f0f0f0');document.documentElement.style.setProperty('--b','#e0e0e0');document.documentElement.style.setProperty('--t','#1a1a1a');document.documentElement.style.setProperty('--d','#666666');}
+  else{document.documentElement.style.setProperty('--bg','#0a0a1a');document.documentElement.style.setProperty('--s','#12122a');document.documentElement.style.setProperty('--c','#1a1a3e');document.documentElement.style.setProperty('--b','#2a2a5a');document.documentElement.style.setProperty('--t','#e0e0ff');document.documentElement.style.setProperty('--d','#9a9abf');}
+  saveSetting('darkMode',dark);toast(dark?'深色模式':'浅色模式');
 }
 
-// ==================== Toast ====================
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer=setTimeout(function(){t.classList.remove('show');},2000);
+// localStorage 持久化
+function saveSetting(k,v){try{localStorage.setItem('qf_'+k,JSON.stringify(v))}catch(e){}}
+function loadSetting(k,d){try{var v=localStorage.getItem('qf_'+k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+function loadSettings(){
+  var dm=loadSetting('darkMode',true);document.getElementById('switch-dark').checked=dm;if(!dm)toggleDarkMode(false);
+  document.getElementById('set-exchange').textContent=loadSetting('exchange','Binance');
+  document.getElementById('set-model').textContent=loadSetting('model','DeepSeek');
+  document.getElementById('set-aiurl').textContent=loadSetting('aiUrl','http://localhost:8000');
+  document.getElementById('set-dd').textContent=loadSetting('dd','15%');
+  document.getElementById('set-pos').textContent=loadSetting('pos','20%');
+  document.getElementById('set-lev').textContent=loadSetting('lev','10x');
+  document.getElementById('set-lang').textContent=loadSetting('lang','中文');
+  var ak=loadSetting('apikey','');if(ak){document.getElementById('apikey-status').textContent='已配置';document.getElementById('apikey-status').style.color='var(--g)';}
 }
 
-// ==================== 开关切换 ====================
-function toggleSwitch(id){
-  var sw=document.getElementById(id);
-  if(sw){
-    sw.checked=!sw.checked;
-    sw.dispatchEvent(new Event('change'));
-  }
-}
-
-// ==================== 渲染 ====================
 function renderDash(){
-  // 策略
-  var html='';
-  strategies.forEach(function(s){
-    var sc=s.status==='running'?'var(--g)':'var(--w)';
-    var st=s.status==='running'?'运行中':'已暂停';
-    html+='<div class="card" onclick="toast(\''+s.name+': '+s.info+' → '+(s.pnl>0?'+':'')+s.pnl+'%\')" style="cursor:pointer">';
-    html+='<div class="row-between"><div class="row" style="gap:8px"><div style="width:36px;height:36px;border-radius:50%;background:'+sc+'22;display:flex;align-items:center;justify-content:center;color:'+sc+'">'+(s.status==='running'?'▶':'⏸')+'</div>';
-    html+='<div><div class="bold">'+s.name+'</div><div class="text-sm text-dim">'+s.info+'</div></div></div>';
-    html+='<div style="text-align:right"><div class="text-xs" style="color:'+sc+'">'+st+'</div><div class="bold text-g">+'+s.pnl+'%</div></div></div></div>';
-  });
-  document.getElementById('dash-strategies').innerHTML=html;
-
-  // 交易
-  var trades=[{sym:'BTCUSDT',side:'BUY',p:62450,pnl:3.2,ok:true},{sym:'ETHUSDT',side:'SELL',p:3120,pnl:-1.5,ok:false},{sym:'BTCUSDT',side:'BUY',p:61800,pnl:5.1,ok:true}];
-  html='';
-  trades.forEach(function(t){
-    html+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><span style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.side==='BUY'?'↓':'↑')+'</span>';
-    html+='<div><div class="bold">'+t.sym+' '+t.side+'</div><div class="text-sm text-dim">$'+t.p.toLocaleString()+'</div></div></div>';
-    html+='<div class="bold" style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.pnl>0?'+':'')+t.pnl+'%</div></div></div>';
-  });
-  document.getElementById('dash-trades').innerHTML=html;
+  var h='';strategies.forEach(function(s){var c=s.status==='running'?'var(--g)':'var(--w)';h+='<div class="card" onclick="showStrategyDetail('+strategies.indexOf(s)+')" style="cursor:pointer"><div class="row-between"><div class="row" style="gap:8px"><div style="width:36px;height:36px;border-radius:50%;background:'+c+'22;display:flex;align-items:center;justify-content:center;color:'+c+'">'+(s.status==='running'?'▶':'⏸')+'</div><div><div class="bold">'+s.name+'</div><div class="text-sm text-dim">'+s.info+'</div></div></div><div style="text-align:right"><div class="text-xs" style="color:'+c+'">'+(s.status==='running'?'运行中':'已暂停')+'</div><div class="bold text-g">+'+s.pnl+'%</div></div></div></div>';});
+  document.getElementById('dash-strategies').innerHTML=h;
+  h='';var trades=historyTrades.slice(-3).reverse();trades.forEach(function(t){h+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><span style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.side==='BUY'?'↓':'↑')+'</span><div><div class="bold">'+t.sym+' '+t.side+'</div><div class="text-sm text-dim">$'+t.p.toLocaleString()+'</div></div></div><div class="bold" style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.pnl>0?'+':'')+t.pnl+'%</div></div></div>';});
+  document.getElementById('dash-trades').innerHTML=h;
 }
-
 function renderStrategy(){
-  var html='';
-  strategies.forEach(function(s,i){
-    var sc=s.status==='running'?'var(--g)':'var(--w)';
-    html+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><div style="width:36px;height:36px;border-radius:50%;background:'+sc+'22;display:flex;align-items:center;justify-content:center;color:'+sc+'">'+(s.status==='running'?'▶':'⏸')+'</div>';
-    html+='<div><div class="row" style="gap:4px"><span class="bold">'+s.name+'</span>'+(s.ai?'<span class="badge badge-a">AI</span>':'')+'</div><div class="text-sm text-dim">'+s.info+'</div></div></div>';
-    html+='<button class="btn btn-o" onclick="event.stopPropagation();toggleStrategy('+i+')">'+(s.status==='running'?'暂停':'启动')+'</button></div>';
-    html+='<div class="row-between" style="margin-top:12px"><div class="text-center"><div class="text-xs text-dim">收益</div><div class="text-g bold">+'+s.pnl+'%</div></div>';
-    html+='<div class="text-center"><div class="text-xs text-dim">胜率</div><div class="text-a bold">'+s.wr+'%</div></div>';
-    html+='<div class="text-center"><div class="text-xs text-dim">回撤</div><div class="text-r bold">-'+s.dd+'%</div></div></div></div>';
-  });
-  document.getElementById('strategy-list').innerHTML=html;
+  var h='';strategies.forEach(function(s,i){var c=s.status==='running'?'var(--g)':'var(--w)';h+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><div style="width:36px;height:36px;border-radius:50%;background:'+c+'22;display:flex;align-items:center;justify-content:center;color:'+c+'">'+(s.status==='running'?'▶':'⏸')+'</div><div><div class="row" style="gap:4px"><span class="bold">'+s.name+'</span>'+(s.ai?'<span class="badge badge-a">AI</span>':'')+'</div><div class="text-sm text-dim">'+s.info+'</div></div></div><button class="btn btn-o" style="min-width:60px" onclick="event.stopPropagation();toggleStrategy('+i+')">'+(s.status==='running'?'暂停':'启动')+'</button></div><div class="row-between" style="margin-top:12px"><div class="text-center" onclick="event.stopPropagation();showStrategyDetail('+i+')" style="cursor:pointer;flex:1"><div class="text-xs text-dim">收益</div><div class="text-g bold">+'+s.pnl+'%</div></div><div class="text-center" style="flex:1"><div class="text-xs text-dim">胜率</div><div class="text-a bold">'+s.wr+'%</div></div><div class="text-center" style="flex:1"><div class="text-xs text-dim">回撤</div><div class="text-r bold">-'+s.dd+'%</div></div></div></div>';});
+  document.getElementById('strategy-list').innerHTML=h;
 }
-
 function renderTrading(){
-  // 持仓
-  var html='';
-  if(positions.length===0){
-    html='<div class="card text-center text-dim" style="padding:40px">暂无持仓</div>';
-  }else{
-    positions.forEach(function(p,i){
-      var isLong=p.side==='LONG';
-      var c=isLong?'var(--g)':'var(--r)';
-      html+='<div class="card"><div class="row-between"><span class="badge" style="background:'+c+'22;color:'+c+'">'+p.side+'</span><span class="bold">'+p.sym+'</span><span class="bold text-g">+'+p.pnl+'%</span></div>';
-      html+='<div class="row-between" style="margin-top:12px"><div class="text-center"><div class="text-xs text-dim">入场</div><div>$'+p.entry.toLocaleString()+'</div></div>';
-      html+='<div class="text-center"><div class="text-xs text-dim">当前</div><div>$'+p.cur.toLocaleString()+'</div></div>';
-      html+='<div class="text-center"><div class="text-xs text-dim">止损</div><div class="text-r">$'+p.sl.toLocaleString()+'</div></div>';
-      html+='<div class="text-center"><div class="text-xs text-dim">止盈</div><div class="text-g">$'+p.tp.toLocaleString()+'</div></div></div>';
-      html+='<div class="row" style="gap:8px;margin-top:12px"><button class="btn btn-o" style="flex:1" onclick="showModifySL('+i+')">修改止损</button>';
-      html+='<button class="btn btn-o" style="flex:1" onclick="showModifyTP('+i+')">修改止盈</button>';
-      html+='<button class="btn btn-r" style="flex:1" onclick="showClose('+i+')">平仓</button></div></div>';
-    });
-  }
-  document.getElementById('tab-pos').innerHTML=html;
-
-  // 历史
-  var htrades=[{sym:'BTCUSDT',side:'BUY',p:61200,pnl:3.2,ok:true},{sym:'ETHUSDT',side:'SELL',p:3200,pnl:-1.5,ok:false},{sym:'BTCUSDT',side:'BUY',p:60800,pnl:5.1,ok:true},{sym:'SOLUSDT',side:'BUY',p:145.5,pnl:2.8,ok:true}];
-  html='';
-  htrades.forEach(function(t){
-    html+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><span style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.side==='BUY'?'↓':'↑')+'</span>';
-    html+='<div><div class="bold">'+t.sym+' '+t.side+'</div><div class="text-sm text-dim">$'+t.p+'</div></div></div>';
-    html+='<div class="bold" style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.pnl>0?'+':'')+t.pnl+'%</div></div></div>';
-  });
-  document.getElementById('tab-hist').innerHTML=html;
+  var h='';if(positions.length===0)h='<div class="card text-center text-dim" style="padding:40px">暂无持仓</div>';
+  else positions.forEach(function(p,i){var isL=p.side==='LONG';var c=isL?'var(--g)':'var(--r)';h+='<div class="card"><div class="row-between"><span class="badge" style="background:'+c+'22;color:'+c+'">'+p.side+'</span><span class="bold">'+p.sym+'</span><span class="bold text-g">'+(p.pnl>0?'+':'')+p.pnl+'%</span></div><div class="row-between" style="margin-top:12px"><div class="text-center"><div class="text-xs text-dim">入场</div><div>$'+p.entry.toLocaleString()+'</div></div><div class="text-center"><div class="text-xs text-dim">当前</div><div>$'+p.cur.toLocaleString()+'</div></div><div class="text-center"><div class="text-xs text-dim">止损</div><div class="text-r">$'+p.sl.toLocaleString()+'</div></div><div class="text-center"><div class="text-xs text-dim">止盈</div><div class="text-g">$'+p.tp.toLocaleString()+'</div></div></div><div class="row" style="gap:8px;margin-top:12px"><button class="btn btn-o" style="flex:1" onclick="showModifySL('+i+')">修改止损</button><button class="btn btn-o" style="flex:1" onclick="showModifyTP('+i+')">修改止盈</button><button class="btn btn-r" style="flex:1" onclick="showClose('+i+')">平仓</button></div></div>';});
+  document.getElementById('tab-pos').innerHTML=h;
+  h='';historyTrades.slice().reverse().forEach(function(t){h+='<div class="card"><div class="row-between"><div class="row" style="gap:8px"><span style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.side==='BUY'?'↓':'↑')+'</span><div><div class="bold">'+t.sym+' '+t.side+'</div><div class="text-sm text-dim">$'+t.p+' · '+t.time+'</div></div></div><div class="bold" style="color:'+(t.ok?'var(--g)':'var(--r)')+'">'+(t.pnl>0?'+':'')+t.pnl+'%</div></div></div>';});
+  document.getElementById('tab-hist').innerHTML=h;
 }
-
 function renderAnalytics(){
   var months=[{l:'1月',v:3.2},{l:'2月',v:-1.5},{l:'3月',v:5.8},{l:'4月',v:2.1},{l:'5月',v:-0.8},{l:'6月',v:4.5},{l:'7月',v:7.2}];
-  var max=Math.max.apply(null,months.map(function(m){return Math.abs(m.v)}));
-  var html='';
-  months.forEach(function(m){
-    var h=Math.abs(m.v)/max*120;
-    var c=m.v>=0?'var(--g)':'var(--r)';
-    html+='<div class="hbar-item"><div class="hbar-val" style="color:'+c+'">'+(m.v>0?'+':'')+m.v+'%</div><div class="hbar-bar" style="height:'+h+'px;background:'+c+'"></div><div class="hbar-label">'+m.l+'</div></div>';
-  });
-  document.getElementById('monthly-chart').innerHTML=html;
-
+  var mx=Math.max.apply(null,months.map(function(m){return Math.abs(m.v)}));
+  var h='';months.forEach(function(m){var bh=Math.abs(m.v)/mx*120;var c=m.v>=0?'var(--g)':'var(--r)';h+='<div class="hbar-item"><div class="hbar-val" style="color:'+c+'">'+(m.v>0?'+':'')+m.v+'%</div><div class="hbar-bar" style="height:'+bh+'px;background:'+c+'"></div><div class="hbar-label">'+m.l+'</div></div>';});
+  document.getElementById('monthly-chart').innerHTML=h;
   var comps=[{name:'均线交叉',pnl:12.5,sharpe:1.85,ok:true},{name:'RSI 反转',pnl:8.3,sharpe:1.42,ok:true},{name:'布林带',pnl:-2.1,sharpe:0.65,ok:false}];
-  html='';
-  comps.forEach(function(s){
-    html+='<div class="row-between" style="padding:8px 0;border-bottom:1px solid var(--b)"><span>'+s.name+'</span><span class="bold" style="color:'+(s.ok?'var(--g)':'var(--r)')+'">'+(s.pnl>0?'+':'')+s.pnl+'%</span><span class="text-sm text-dim">夏普 '+s.sharpe+'</span></div>';
-  });
-  document.getElementById('strategy-compare').innerHTML=html;
+  h='';comps.forEach(function(s){h+='<div class="row-between" style="padding:8px 0;border-bottom:1px solid rgba(42,42,90,.5)"><span>'+s.name+'</span><span class="bold" style="color:'+(s.ok?'var(--g)':'var(--r)')+'">'+(s.pnl>0?'+':'')+s.pnl+'%</span><span class="text-sm text-dim">夏普 '+s.sharpe+'</span></div>';});
+  document.getElementById('strategy-compare').innerHTML=h;
 }
-
-// ==================== 图表 ====================
 function drawChart(){
-  var c=document.getElementById('chart-equity');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var rect=c.getBoundingClientRect();
-  c.width=rect.width*2;c.height=320;
-  ctx.scale(2,2);
-  var w=rect.width,h=160;
-  var data=[10000,10150,10080,10300,10250,10500,10420,10680,10600,10850,10750,11000];
-  var min=Math.min.apply(null,data)*0.98,max=Math.max.apply(null,data)*1.02;
-  var pts=data.map(function(v,i){return{x:i/(data.length-1)*w,y:h-(v-min)/(max-min)*h}});
-
-  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
-  pts.forEach(function(p){ctx.lineTo(p.x,p.y)});
-  ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
-  var g=ctx.createLinearGradient(0,0,0,h);
-  g.addColorStop(0,'rgba(0,210,211,0.3)');g.addColorStop(1,'rgba(0,210,211,0)');
-  ctx.fillStyle=g;ctx.fill();
-
-  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
-  pts.forEach(function(p){ctx.lineTo(p.x,p.y)});
-  ctx.strokeStyle='#00d2d3';ctx.lineWidth=2;ctx.stroke();
+  var c=document.getElementById('chart-equity');if(!c)return;
+  var ctx=c.getContext('2d');var r=c.getBoundingClientRect();c.width=r.width*2;c.height=320;ctx.scale(2,2);
+  var w=r.width,h=160,data=[10000,10150,10080,10300,10250,10500,10420,10680,10600,10850,10750,11000];
+  var mn=Math.min.apply(null,data)*.98,mx=Math.max.apply(null,data)*1.02;
+  var pts=data.map(function(v,i){return{x:i/(data.length-1)*w,y:h-(v-mn)/(mx-mn)*h}});
+  // 网格线
+  ctx.strokeStyle='rgba(42,42,90,.3)';ctx.lineWidth=.5;
+  for(var i=1;i<=4;i++){var gy=h*i/5;ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
+  // 填充
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(function(p){ctx.lineTo(p.x,p.y)});ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
+  var g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(0,210,211,.3)');g.addColorStop(1,'rgba(0,210,211,0)');ctx.fillStyle=g;ctx.fill();
+  // 线条
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(function(p){ctx.lineTo(p.x,p.y)});ctx.strokeStyle='#00d2d3';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+  // 终点指示器
+  var last=pts[pts.length-1];ctx.beginPath();ctx.arc(last.x,last.y,5,0,Math.PI*2);ctx.fillStyle='#00d2d3';ctx.fill();ctx.beginPath();ctx.arc(last.x,last.y,3,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();
 }
 
-// ==================== 交互 ====================
-function toggleStrategy(i){
-  strategies[i].status=strategies[i].status==='running'?'paused':'running';
-  toast(strategies[i].name+' → '+(strategies[i].status==='running'?'已启动':'已暂停'));
-  renderDash();renderStrategy();
-}
+// 交互
+function toggleStrategy(i){strategies[i].status=strategies[i].status==='running'?'paused':'running';toast(strategies[i].name+' → '+(strategies[i].status==='running'?'已启动':'已暂停'));renderDash();renderStrategy();}
+function showStrategyDetail(i){var s=strategies[i];document.getElementById('detail-name').textContent=s.name;document.getElementById('detail-content').innerHTML='<div class="text-sm text-dim" style="margin-bottom:12px">'+s.info+'</div><div class="row-between" style="margin-bottom:16px"><div class="text-center"><div class="text-xs text-dim">收益</div><div class="text-g bold" style="font-size:18px">+'+s.pnl+'%</div></div><div class="text-center"><div class="text-xs text-dim">胜率</div><div class="text-a bold" style="font-size:18px">'+s.wr+'%</div></div><div class="text-center"><div class="text-xs text-dim">回撤</div><div class="text-r bold" style="font-size:18px">-'+s.dd+'%</div></div></div><div class="row" style="gap:8px"><button class="btn btn-p" style="flex:1" onclick="hideModal(\'modal-strategy-detail\');toast(\'✅ '+s.name+' 已启动\')">启动</button><button class="btn btn-o" style="flex:1" onclick="hideModal(\'modal-strategy-detail\');toast(\'📊 回测完成\')">回测</button><button class="btn btn-a" style="flex:1" onclick="hideModal(\'modal-strategy-detail\');toast(\'🤖 AI 优化完成\')">AI 优化</button></div><div style="margin-top:12px"><button class="btn btn-r btn-full" onclick="deleteStrategy('+i+')">删除策略</button></div>';showModal('modal-strategy-detail');}
+function deleteStrategy(i){var n=strategies[i].name;strategies.splice(i,1);hideModal('modal-strategy-detail');toast('🗑️ 已删除 '+n);renderDash();renderStrategy();}
+function showClose(i){closeIdx=i;var p=positions[i];var isL=p.side==='LONG';var pnlColor=isL?(p.cur>p.entry?'var(--g)':'var(--r)'):(p.cur<p.entry?'var(--g)':'var(--r)');document.getElementById('close-sym').textContent=p.sym+' '+p.side;document.getElementById('close-info').innerHTML='入场: $'+p.entry.toLocaleString()+'<br>当前: $'+p.cur.toLocaleString()+'<br>盈亏: <span style="color:'+pnlColor+';font-weight:700">'+(p.pnl>0?'+':'')+p.pnl+'%</span>';showModal('modal-close');}
+function confirmClose(){var p=positions[closeIdx];historyTrades.push({sym:p.sym,side:p.side==='LONG'?'SELL':'BUY',p:p.cur,pnl:p.pnl,ok:p.pnl>0,time:new Date().toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})});positions.splice(closeIdx,1);hideModal('modal-close');toast('✅ '+p.sym+' 已平仓');renderDash();renderTrading();}
+function showModifySL(i){modifyIdx=i;document.getElementById('sl-sym').textContent=positions[i].sym+' | 当前止损: $'+positions[i].sl.toLocaleString();document.getElementById('inp-sl').value=positions[i].sl;showModal('modal-sl');}
+function saveSL(){var v=parseFloat(document.getElementById('inp-sl').value);if(isNaN(v))return toast('请输入有效价格');var p=positions[modifyIdx];if(p.side==='LONG'&&v>=p.entry)return toast('❌ LONG 止损必须低于入场价');if(p.side==='SHORT'&&v<=p.entry)return toast('❌ SHORT 止损必须高于入场价');p.sl=v;hideModal('modal-sl');toast('✅ '+p.sym+' 止损已改为 $'+v.toLocaleString());renderTrading();}
+function showModifyTP(i){modifyIdx=i;document.getElementById('tp-sym').textContent=positions[i].sym+' | 当前止盈: $'+positions[i].tp.toLocaleString();document.getElementById('inp-tp').value=positions[i].tp;showModal('modal-tp');}
+function saveTP(){var v=parseFloat(document.getElementById('inp-tp').value);if(isNaN(v))return toast('请输入有效价格');var p=positions[modifyIdx];if(p.side==='LONG'&&v<=p.entry)return toast('❌ LONG 止盈必须高于入场价');if(p.side==='SHORT'&&v>=p.entry)return toast('❌ SHORT 止盈必须低于入场价');p.tp=v;hideModal('modal-tp');toast('✅ '+p.sym+' 止盈已改为 $'+v.toLocaleString());renderTrading();}
+function createStrategy(){var d=document.getElementById('inp-strategy').value;if(!d.trim())return toast('请输入策略描述');strategies.push({name:'AI: '+d.slice(0,20)+(d.length>20?'...':''),info:'BTCUSDT · 1h · AI',status:'draft',ai:true,pnl:0,wr:0,dd:0});hideModal('modal-create');toast('✅ 策略已生成');renderDash();renderStrategy();}
+function runBacktest(){var d=document.getElementById('inp-strategy').value;if(!d.trim())return toast('请先输入策略描述');var r={name:'AI 策略',period:'90天',return:'+23.6%',sharpe:'2.29',winRate:'52%',maxDD:'-8.5%',trades:'23'};document.getElementById('backtest-result').innerHTML='<div class="text-center" style="margin-bottom:16px"><div class="text-g bold" style="font-size:28px">'+r.return+'</div><div class="text-sm text-dim">90天收益</div></div><div class="row-between" style="margin-bottom:8px"><span class="text-dim">夏普比率</span><span class="bold">'+r.sharpe+'</span></div><div class="row-between" style="margin-bottom:8px"><span class="text-dim">胜率</span><span class="text-g bold">'+r.winRate+'</span></div><div class="row-between" style="margin-bottom:8px"><span class="text-dim">最大回撤</span><span class="text-r bold">'+r.maxDD+'</span></div><div class="row-between" style="margin-bottom:8px"><span class="text-dim">交易次数</span><span class="bold">'+r.trades+'</span></div><div class="row" style="gap:8px;margin-top:16px"><button class="btn btn-o" style="flex:1" onclick="hideModal(\'modal-backtest\')">关闭</button><button class="btn btn-p" style="flex:1" onclick="hideModal(\'modal-backtest\');createStrategy()">应用策略</button></div>';showModal('modal-backtest');}
 
-function showClose(i){
-  closeIdx=i;
-  var p=positions[i];
-  document.getElementById('close-sym').textContent=p.sym+' '+p.side;
-  document.getElementById('close-info').innerHTML='入场: $'+p.entry.toLocaleString()+'<br>当前: $'+p.cur.toLocaleString()+'<br>盈亏: <span class="text-g bold">+'+p.pnl+'%</span>';
-  showModal('modal-close');
-}
-function confirmClose(){
-  var p=positions[closeIdx];
-  positions.splice(closeIdx,1);
-  hideModal('modal-close');
-  toast('✅ '+p.sym+' 已平仓');
-  renderDash();renderTrading();
-}
-
-function showModifySL(i){
-  modifyIdx=i;
-  document.getElementById('sl-sym').textContent=positions[i].sym+' | 当前止损: $'+positions[i].sl.toLocaleString();
-  document.getElementById('inp-sl').value=positions[i].sl;
-  showModal('modal-sl');
-}
-function saveSL(){
-  var v=parseFloat(document.getElementById('inp-sl').value);
-  if(isNaN(v))return toast('请输入有效价格');
-  positions[modifyIdx].sl=v;
-  hideModal('modal-sl');
-  toast('✅ '+positions[modifyIdx].sym+' 止损已修改为 $'+v.toLocaleString());
-  renderTrading();
-}
-
-function showModifyTP(i){
-  modifyIdx=i;
-  document.getElementById('tp-sym').textContent=positions[i].sym+' | 当前止盈: $'+positions[i].tp.toLocaleString();
-  document.getElementById('inp-tp').value=positions[i].tp;
-  showModal('modal-tp');
-}
-function saveTP(){
-  var v=parseFloat(document.getElementById('inp-tp').value);
-  if(isNaN(v))return toast('请输入有效价格');
-  positions[modifyIdx].tp=v;
-  hideModal('modal-tp');
-  toast('✅ '+positions[modifyIdx].sym+' 止盈已修改为 $'+v.toLocaleString());
-  renderTrading();
-}
-
-function createStrategy(){
-  var desc=document.getElementById('inp-strategy').value;
-  if(!desc.trim())return toast('请输入策略描述');
-  strategies.push({name:'AI: '+desc.slice(0,15)+'...',info:'BTCUSDT · 1h · AI',status:'running',ai:true,pnl:0,wr:0,dd:0});
-  hideModal('modal-create');
-  toast('✅ 策略已生成');
-  renderDash();renderStrategy();
-}
-
-// ==================== 设置 ====================
-var exchanges=['Binance','OKX','Gate.io','Bybit'];
-var models=['DeepSeek','Qwen (通义)','GPT-4','本地 Llama'];
-var leverages=['1x','2x','3x','5x','10x','20x','50x','100x'];
-
+// 设置
+var exchanges=['Binance','OKX','Gate.io','Bybit'],models=['DeepSeek','Qwen (通义)','GPT-4','本地 Llama'],leverages=['1x','2x','3x','5x','10x','20x','50x','100x'],languages=['中文','English','日本語'];
 function renderSettings(){
-  var html='';
-  exchanges.forEach(function(e){
-    html+='<div class="setting-item" onclick="document.getElementById(\'set-exchange\').textContent=\''+e+'\';hideModal(\'modal-exchange\');toast(\'已切换到 '+e+'\')"><div class="setting-info"><div class="title">'+e+'</div></div></div>';
-  });
-  document.getElementById('exchange-list').innerHTML=html;
-
-  html='';
-  models.forEach(function(m){
-    html+='<div class="setting-item" onclick="document.getElementById(\'set-model\').textContent=\''+m+'\';hideModal(\'modal-model\');toast(\'已切换到 '+m+'\')"><div class="setting-info"><div class="title">'+m+'</div></div></div>';
-  });
-  document.getElementById('model-list').innerHTML=html;
-
-  html='';
-  leverages.forEach(function(l){
-    html+='<div class="setting-item" onclick="document.getElementById(\'set-lev\').textContent=\''+l+'\';hideModal(\'modal-lev\');toast(\'杠杆已设置为 '+l+'\')"><div class="setting-info"><div class="title">'+l+'</div></div></div>';
-  });
-  document.getElementById('lev-list').innerHTML=html;
+  var h='';exchanges.forEach(function(e){var active=document.getElementById('set-exchange').textContent===e;h+='<div class="setting-item '+(active?'list-item-active':'')+'" onclick="document.getElementById(\'set-exchange\').textContent=\''+e+'\';saveSetting(\'exchange\',\''+e+'\');hideModal(\'modal-exchange\');renderSettings();toast(\'已切换到 '+e+'\')"><div class="setting-info"><div class="title">'+e+'</div></div>'+(active?'<span class="text-a">✓</span>':'')+'</div>';});document.getElementById('exchange-list').innerHTML=h;
+  h='';models.forEach(function(m){var active=document.getElementById('set-model').textContent===m;h+='<div class="setting-item '+(active?'list-item-active':'')+'" onclick="document.getElementById(\'set-model\').textContent=\''+m+'\';saveSetting(\'model\',\''+m+'\');hideModal(\'modal-model\');renderSettings();toast(\'已切换到 '+m+'\')"><div class="setting-info"><div class="title">'+m+'</div></div>'+(active?'<span class="text-a">✓</span>':'')+'</div>';});document.getElementById('model-list').innerHTML=h;
+  h='';leverages.forEach(function(l){var active=document.getElementById('set-lev').textContent===l;h+='<div class="setting-item '+(active?'list-item-active':'')+'" onclick="document.getElementById(\'set-lev\').textContent=\''+l+'\';saveSetting(\'lev\',\''+l+'\');hideModal(\'modal-lev\');renderSettings();toast(\'杠杆已设置为 '+l+'\')"><div class="setting-info"><div class="title">'+l+'</div></div>'+(active?'<span class="text-a">✓</span>':'')+'</div>';});document.getElementById('lev-list').innerHTML=h;
+  h='';languages.forEach(function(l){var active=document.getElementById('set-lang').textContent===l;h+='<div class="setting-item '+(active?'list-item-active':'')+'" onclick="document.getElementById(\'set-lang\').textContent=\''+l+'\';saveSetting(\'lang\',\''+l+'\');hideModal(\'modal-lang\');renderSettings();toast(\'语言已切换\')"><div class="setting-info"><div class="title">'+l+'</div></div>'+(active?'<span class="text-a">✓</span>':'')+'</div>';});document.getElementById('lang-list').innerHTML=h;
 }
+function saveApiKey(){var k=document.getElementById('inp-apikey').value;if(!k.trim())return toast('请输入 API Key');document.getElementById('apikey-status').textContent=k.slice(0,6)+'***'+k.slice(-4);document.getElementById('apikey-status').style.color='var(--g)';saveSetting('apikey',k);hideModal('modal-apikey');toast('✅ API Key 已保存');}
+function saveAiUrl(){var u=document.getElementById('inp-aiurl').value;document.getElementById('set-aiurl').textContent=u;saveSetting('aiUrl',u);hideModal('modal-aiurl');toast('✅ 已保存: '+u);}
+function saveEmail(){var e=document.getElementById('inp-email').value;if(!e.includes('@'))return toast('请输入有效邮箱');document.getElementById('disp-email').textContent=e;saveSetting('email',e);hideModal('modal-email');toast('✅ 邮箱已更新');}
+function savePwd(){var p1=document.getElementById('inp-pwd1').value,p2=document.getElementById('inp-pwd2').value;if(p1.length<6)return toast('密码至少6位');if(p1!==p2)return toast('两次密码不一致');hideModal('modal-pwd');toast('✅ 密码已修改');}
 
-function saveApiKey(){
-  var k=document.getElementById('inp-apikey').value;
-  if(!k.trim())return toast('请输入 API Key');
-  document.getElementById('apikey-status').textContent='已配置';
-  document.getElementById('apikey-status').style.color='var(--g)';
-  hideModal('modal-apikey');
-  toast('✅ API Key 已保存');
-}
-function saveAiUrl(){
-  var u=document.getElementById('inp-aiurl').value;
-  document.getElementById('set-aiurl').textContent=u;
-  hideModal('modal-aiurl');
-  toast('✅ 已保存: '+u);
-}
-
-// ==================== AI 对话 ====================
-function sendMsg(text){
-  text=text||document.getElementById('chat-input').value;
-  if(!text.trim())return;
-  document.getElementById('chat-input').value='';
-  var list=document.getElementById('chat-list');
-  list.innerHTML+='<div class="msg msg-user">'+text+'</div>';
-  list.scrollTop=list.scrollHeight;
-
-  setTimeout(function(){
-    var replies={
-      '分析 BTC 当前市场走势':'📊 BTC 市场分析\n\n当前价格: $62,450\n24h 涨跌: -1.2%\n\n技术面:\n• RSI(14) = 45，中性偏弱\n• MACD 柱状图转负\n• 支撑位: $61,000 / $59,500\n• 阻力位: $64,000 / $66,000\n\n💡 建议: 观望为主',
-      '帮我生成一个 RSI 量化策略':'🎯 RSI 策略已生成\n\n策略逻辑:\n• RSI(14) < 30 时买入\n• RSI(14) > 70 时卖出\n• 止损: 3%\n• 止盈: 6%\n\n回测结果 (90天):\n• 收益: +23.6%\n• 胜率: 52%\n• 夏普: 2.29',
-      '评估我当前持仓的风险':'🛡️ 持仓风险评估\n\n当前持仓:\n• BTCUSDT LONG: 浮盈 +1.04%\n• ETHUSDT SHORT: 浮盈 +0.95%\n\n风险评分: 4/10 (低)\n\n✅ 持仓分散度良好\n✅ 杠杆在安全范围',
-      '帮我优化均线交叉策略':'🔬 优化建议\n\n原参数: MA(5/20)\n优化后: MA(8/30)\n\n改进:\n• 收益: +12.5% → +30.2%\n• 胜率: 37% → 42%\n• 回撤: 28% → 20%\n\n是否应用优化?'
-    };
-    var reply=replies[text]||'收到: "'+text+'"\n\n⚠️ 离线模式，请在设置中配置 AI 引擎地址。';
-    list.innerHTML+='<div class="msg msg-bot">'+reply.replace(/\n/g,'<br>')+'</div>';
-    list.scrollTop=list.scrollHeight;
-  },800);
-}
-function clearChat(){
-  document.getElementById('chat-list').innerHTML='<div class="msg msg-bot">👋 对话已清空。有什么想问的？</div>';
-  toast('已清空对话');
-}
+// AI 对话
+function sendMsg(text){text=text||document.getElementById('chat-input').value;if(!text.trim())return;document.getElementById('chat-input').value='';var list=document.getElementById('chat-list');list.innerHTML+='<div class="msg msg-user">'+text+'</div>';list.innerHTML+='<div class="msg msg-bot" id="typing"><div class="loading-dots"><span></span><span></span><span></span></div></div>';list.scrollTop=list.scrollHeight;setTimeout(function(){var el=document.getElementById('typing');if(el)el.remove();var replies={'分析 BTC 当前市场走势':'📊 BTC 市场分析\n\n当前价格: $62,450\n24h 涨跌: -1.2%\n\n技术面:\n• RSI(14) = 45，中性偏弱\n• MACD 柱状图转负\n• 支撑位: $61,000 / $59,500\n• 阻力位: $64,000 / $66,000\n\n💡 建议: 观望为主，跌破 $61,000 止损','帮我生成一个 RSI 量化策略':'🎯 RSI 策略已生成\n\n策略逻辑:\n• RSI(14) < 30 时买入\n• RSI(14) > 70 时卖出\n• 止损: 3%\n• 止盈: 6%\n\n回测 (90天):\n• 收益: +23.6% | 胜率: 52%\n• 夏普: 2.29 | 回撤: -8.5%\n\n✅ 可在策略管理中查看','评估我当前持仓的风险':'🛡️ 持仓风险评估\n\nBTCUSDT LONG: 浮盈 +1.04%\nETHUSDT SHORT: 浮盈 +0.95%\n\n风险评分: 4/10 (低)\n\n✅ 分散度良好\n✅ 杠杆安全\n⚠️ 建议设置移动止损','帮我优化均线交叉策略':'🔬 优化建议\n\n原参数: MA(5/20)\n优化后: MA(8/30)\n\n改进:\n• 收益: +12.5% → +30.2%\n• 胜率: 37% → 42%\n• 回撤: 28% → 20%\n\n是否应用?'};var reply=replies[text]||'收到: "'+text+'"\n\n⚠️ 离线模式，请在设置中配置 AI 引擎地址。';list.innerHTML+='<div class="msg msg-bot">'+reply.replace(/\n/g,'<br>')+'</div>';list.scrollTop=list.scrollHeight;},1200);}
+function clearChat(){document.getElementById('chat-list').innerHTML='<div class="msg msg-bot">👋 对话已清空。有什么想问的？</div>';toast('已清空对话');}
 </script>
 </body>
 </html>
