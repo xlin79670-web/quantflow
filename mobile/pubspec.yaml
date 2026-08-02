@@ -43,6 +43,9 @@ dependencies:
   # WebView (AI 对话嵌入)
   webview_flutter: ^4.10.0
   
+  # 数据可视化
+  fl_chart: ^0.68.0
+  
   # 代码高亮
   flutter_highlight: ^0.7.0
   highlight: ^0.7.0
